@@ -1,43 +1,34 @@
-import React, { Fragment, createElement } from 'react';
+import React, { Fragment, createElement } from "react";
+
+import Repo from "components/repo";
+import Product from "components/product";
 
 export const render = (component, enhancement) => (props, index) =>
   createElement(component, { ...props, ...enhancement, index, key: index });
 
-export const Repo = ({
-  index,
-  name,
-  description,
-  url,
-  liked = false,
-  like,
+export default ({
+  repos = [],
+  products = [],
+  toggleRepoLike,
+  testing,
+  nested: {
+    methods: {
+      are: { here }
+    }
+  },
+  fail
 }) => (
-  <dl>
-    <dt>
-      <a href={url} target="_blank" title={name}>
-        {name}
-      </a>
-    </dt>
-    <dd>{description}</dd>
-    <dd>
-      <h3 onClick={() => like(index)}>{liked ? '👍' : '👎'}</h3>
-    </dd>
-  </dl>
-);
-
-export const Product = ({ name, description, url }) => (
-  <dl>
-    <dt>
-      <a href={url} target="_blank" title={name}>
-        {name}
-      </a>
-    </dt>
-    <dd>{description}</dd>
-  </dl>
-);
-
-export default ({ repos = [], products = [], toggleRepoLike }) => (
   <Fragment>
     <h1>Home();</h1>
+    <button
+      onClick={() =>
+        testing("sellics", "amazon", "isaque", { foo: "bar" }, 123)
+      }
+    >
+      Click me
+    </button>
+    <button onClick={() => here()}>Click me (nested)</button>
+    <button onClick={() => fail()}>Fail!</button>
     <section>
       <h2>Some repos</h2>
       {repos.map(render(Repo, { like: toggleRepoLike }))}

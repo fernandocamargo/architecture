@@ -1,3 +1,3 @@
-import { compose } from 'recompose';
+import { compose, hoistStatics, withProps } from "recompose";
 
-export default compose();
+export default compose(hoistStatics(withProps(() => ({ lol: "ROFL" }))));
