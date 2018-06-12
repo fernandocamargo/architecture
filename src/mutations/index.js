@@ -14,6 +14,10 @@ export const toggleRepoLikedByIndex = index => ({
   }
 });
 
+export const removeProduct = index => ({
+  products: { $splice: [[index, 1]] }
+});
+
 export const setTesting = (...params) => ({
   testing: { $set: params }
 });

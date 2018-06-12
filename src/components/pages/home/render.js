@@ -10,13 +10,15 @@ export default ({
   repos = [],
   products = [],
   toggleRepoLike,
+  removeProduct,
   testing,
   nested: {
     methods: {
       are: { here }
     }
   },
-  fail
+  fail,
+  watch
 }) => (
   <Fragment>
     <h1>Home();</h1>
@@ -31,11 +33,33 @@ export default ({
     <button onClick={() => fail()}>Fail!</button>
     <section>
       <h2>Some repos</h2>
-      {repos.map(render(Repo, { like: toggleRepoLike }))}
+      {repos.map(
+        render(
+          watch([
+            {
+              what: toggleRepoLike,
+              when: ({ index }) => [index],
+              how: "lol"
+            }
+          ]).in(Repo),
+          { like: toggleRepoLike }
+        )
+      )}
     </section>
     <section>
       <h2>Merzbow products</h2>
-      {products.map(render(Product))}
+      {products.map(
+        render(
+          watch([
+            {
+              what: removeProduct,
+              when: ({ index }) => [index],
+              how: "lol"
+            }
+          ]).in(Product),
+          { remove: removeProduct }
+        )
+      )}
     </section>
   </Fragment>
 );

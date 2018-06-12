@@ -1,3 +1,7 @@
-import { compose, hoistStatics, withProps } from "recompose";
+import { compose } from "recompose";
 
-export default compose(hoistStatics(withProps(() => ({ lol: "ROFL" }))));
+import setStatics from "helpers/rendering/statics/set";
+
+import * as statics from "./statics";
+
+export default compose(setStatics(statics));

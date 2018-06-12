@@ -28,8 +28,8 @@ export const replace = (object, path = []) => ({
 export const render = ({ default: component }, props) => {
   const { displayName, DB = Object.create } = component;
   const { dispatch } = props;
-  const { load, ...methods } = replace(DB(props)).with(
-    (name, callback) => (...params) => {
+  const { load, ...methods } = replace(DB(props)).with((name, callback) => {
+    const something = (...params) => {
       const method = [displayName, name].join(".");
 
       return callback(...params).then(mutations =>
@@ -40,15 +40,42 @@ export const render = ({ default: component }, props) => {
           mutations
         })
       );
-    }
-  );
+    };
+
+    return something;
+  });
 
   if (load && hacky) {
     hacky = false;
     load();
   }
 
-  return createElement(component, { ...props, ...methods });
+  return createElement(component, {
+    ...props,
+    ...methods,
+    watch: (settings = []) => {
+      const events = Array.isArray(settings) ? settings : [settings];
+
+      return {
+        in: component => _props =>
+          createElement(component, {
+            ..._props,
+            ...events.reduce(
+              (stack, { how }) =>
+                Object.assign({
+                  [how]: {
+                    timestamp: new Date().getTime(),
+                    loading: false,
+                    success: null,
+                    error: null
+                  }
+                }),
+              {}
+            )
+          })
+      };
+    }
+  });
 };
 
 export const load = component => ({

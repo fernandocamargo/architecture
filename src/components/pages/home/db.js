@@ -3,6 +3,7 @@ import {
   setRepos,
   setProducts,
   toggleRepoLikedByIndex,
+  removeProduct,
   setTesting,
   setNested
 } from "mutations";
@@ -16,6 +17,10 @@ export default props => ({
   toggleRepoLike: index =>
     new Promise(resolve =>
       window.setTimeout(() => resolve(toggleRepoLikedByIndex(index)), 1000)
+    ),
+  removeProduct: index =>
+    new Promise(resolve =>
+      window.setTimeout(() => resolve(removeProduct(index)), 1000)
     ),
   testing: (...params) => Promise.resolve(setTesting(params)),
   nested: {

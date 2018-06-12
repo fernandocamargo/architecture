@@ -2,10 +2,13 @@ import React from "react";
 
 import Item from "components/item";
 
-export default ({ index, liked = false, like, ...props }) => (
+export default ({ index, liked, like, lol, ...props }) => (
   <Item {...props}>
     <dd>
-      <h3 onClick={() => like(index)}>{liked ? "👍" : "👎"}</h3>
+      <button onClick={() => like(index)} style={{ fontSize: "1rem" }}>
+        {liked ? "👍" : "👎"}
+      </button>
+      <pre>{JSON.stringify(lol, null, 2)}</pre>
     </dd>
   </Item>
 );
