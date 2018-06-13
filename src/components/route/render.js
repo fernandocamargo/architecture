@@ -15,12 +15,12 @@ export const replace = (object, path = []) => ({
   with: replacement =>
     Object.entries(object).reduce((stack, [key, value]) => {
       const deep = !!Object.keys(value).length;
-      const fragment = path.concat(key);
+      const location = path.concat(key);
 
       return Object.assign(stack, {
         [key]: deep
-          ? replace(value, fragment).with(replacement)
-          : replacement(fragment.join("."), value)
+          ? replace(value, location).with(replacement)
+          : replacement(location, value)
       });
     }, {})
 });
@@ -28,9 +28,9 @@ export const replace = (object, path = []) => ({
 export const render = ({ default: component }, props) => {
   const { displayName, DB = Object.create } = component;
   const { dispatch } = props;
-  const { load, ...methods } = replace(DB(props)).with((name, callback) => {
-    const something = (...params) => {
-      const method = [displayName, name].join(".");
+  const { load, ...methods } = replace(DB(props)).with((path, callback) => {
+    const connected = (...params) => {
+      const method = [displayName, ...path].join(".");
 
       return callback(...params).then(mutations =>
         dispatch({
@@ -42,7 +42,7 @@ export const render = ({ default: component }, props) => {
       );
     };
 
-    return something;
+    return connected;
   });
 
   if (load && hacky) {
