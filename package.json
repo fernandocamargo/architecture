@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "immutability-helper": "^2.7.0",
+    "md5": "^2.2.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-loadable": "^5.4.0",

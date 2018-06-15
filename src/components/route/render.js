@@ -1,4 +1,6 @@
 import React, { createElement } from "react";
+import md5 from "md5";
+import update from "immutability-helper";
 import { Route } from "react-router";
 import loadable from "react-loadable";
 
@@ -25,30 +27,97 @@ export const replace = (object, path = []) => ({
     }, {})
 });
 
+// export const events = new Map();
+
+export class Events {
+  constructor() {
+    this.value = {};
+  }
+
+  register(method) {
+    const { value } = this;
+    const timestamp = new Date().getTime();
+
+    this.value = update(value, {
+      [md5(method)]: {
+        $set: {
+          [timestamp]: {
+            loading: true,
+            success: null,
+            error: null
+          }
+        }
+      }
+    });
+  }
+}
+
+export const events = new Events();
+
+export const getState = extra => ({
+  loading: true,
+  error: null,
+  ...extra
+});
+
 export const render = ({ default: component }, props) => {
   const { displayName, DB = Object.create } = component;
   const { dispatch } = props;
-  const { load, ...methods } = replace(DB(props)).with((path, callback) => {
-    const connected = (...params) => {
-      const method = [displayName, ...path].join(".");
+  const { load, ...methods } = replace(DB(props)).with((path, wrapped) =>
+    Object.assign((...params) => {
+      const namespace = [displayName, ...path].join(".");
+      const identity = events.register(wrapped);
+      // const instance = !events.has(identity) ? new Map() : events.get(identity);
 
-      return callback(...params).then(mutations =>
-        dispatch({
-          type: getType(`${method}(${printArgs(params)});`),
-          method,
-          params,
-          mutations
+      // events.set(identity, instance.set(timestamp, getState({ params })));
+
+      return wrapped(...params)
+        .then(mutations => {
+          /*
+          events.set(
+            identity,
+            instance.set(
+              timestamp,
+              update(instance.get(timestamp), {
+                loading: { $set: false },
+                success: { $set: mutations }
+              })
+            )
+          );
+          */
+
+          return dispatch({
+            type: getType(`${namespace}(${printArgs(params)});`),
+            method: namespace,
+            params,
+            mutations
+          });
         })
-      );
-    };
-
-    return connected;
-  });
+        .catch(error => {
+          /*
+          events.set(
+            identity,
+            instance.set(
+              timestamp,
+              update(instance.get(timestamp), {
+                loading: { $set: false },
+                error: { $set: error }
+              })
+            )
+          )
+          */
+        });
+    })
+  );
 
   if (load && hacky) {
     hacky = false;
     load();
   }
+
+  console.log(JSON.stringify(events, null, 2));
+
+  // console.log(events);
 
   return createElement(component, {
     ...props,
@@ -61,10 +130,9 @@ export const render = ({ default: component }, props) => {
           createElement(component, {
             ..._props,
             ...events.reduce(
-              (stack, { how }) =>
+              (stack, { prop }) =>
                 Object.assign({
-                  [how]: {
-                    timestamp: new Date().getTime(),
+                  [prop]: {
                     loading: false,
                     success: null,
                     error: null

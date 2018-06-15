@@ -37,9 +37,9 @@ export default ({
         render(
           watch([
             {
-              what: toggleRepoLike,
-              when: ({ index }) => [index],
-              how: "lol"
+              method: toggleRepoLike,
+              params: ({ index }) => [index],
+              prop: "lol"
             }
           ]).in(Repo),
           { like: toggleRepoLike }
@@ -52,9 +52,9 @@ export default ({
         render(
           watch([
             {
-              what: removeProduct,
-              when: ({ index }) => [index],
-              how: "lol"
+              method: removeProduct,
+              params: ({ index }) => [index],
+              prop: "lol"
             }
           ]).in(Product),
           { remove: removeProduct }
