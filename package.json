@@ -2,6 +2,7 @@
   "name": "architecture",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://fernandocamargo.github.io/architecture/",
   "dependencies": {
     "immutability-helper": "^2.7.0",
     "md5": "^2.2.1",

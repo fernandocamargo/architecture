@@ -1,1 +1,26 @@
 language: node_js
+node_js:
+  - "stable"
+notifications:
+  email:
+    onfailure: change
+    onsuccess: change
+branches:
+  only:
+  - master
+beforeinstall:
+- npm install -g npm
+install:
+- npm install --only=dev
+cache:
+  directories:
+  - node_modules
+script:
+  - npm test
+  - npm run build
+deploy:
+  provider: pages
+  github_token: $GH_TOKEN
+  local_dir: build
+  on:
+    branch: master
