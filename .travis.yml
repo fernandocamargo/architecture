@@ -9,15 +9,15 @@ branches:
   only:
   - master
 beforeinstall:
-- npm install -g npm
+- npm install -g yarn
 install:
-- npm install --only=dev
+- yarn install
 cache:
   directories:
   - node_modules
 script:
-  - npm test
-  - npm run build
+  - yarn run test
+  - yarn run build
 deploy:
   provider: pages
   github_token: $GH_TOKEN
