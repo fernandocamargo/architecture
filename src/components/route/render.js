@@ -66,7 +66,7 @@ export const render = ({ default: component }, props) => {
   const { load, ...methods } = replace(DB(props)).with((path, wrapped) =>
     Object.assign((...params) => {
       const namespace = [displayName, ...path].join(".");
-      const identity = events.register(wrapped);
+      // const identity = events.register(wrapped);
       // const instance = !events.has(identity) ? new Map() : events.get(identity);
 
       // events.set(identity, instance.set(timestamp, getState({ params })));
