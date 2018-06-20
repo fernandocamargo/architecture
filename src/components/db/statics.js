@@ -1,4 +1,4 @@
-export const displayName = "Root";
+export const displayName = "DB";
 
 export const propTypes = {};
 

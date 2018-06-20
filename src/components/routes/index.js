@@ -1,5 +1,4 @@
-import compose from './composition';
-import Render from './render';
-import * as statics from './statics';
+import compose from "./composition";
+import Render from "./render";
 
-export default compose(Object.assign(Render, statics));
+export default compose(Render);

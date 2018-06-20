@@ -1,3 +1,4 @@
-import React from 'react';
+import compose from "./composition";
+import Render from "./render";
 
-export default () => <p>Profile();</p>;
+export default compose(Render);

@@ -1,4 +1,4 @@
-export const displayName = "Root";
+export const displayName = "Pages/404";
 
 export const propTypes = {};
 
