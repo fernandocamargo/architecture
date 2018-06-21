@@ -1,10 +1,28 @@
-import React, { Fragment, createElement } from 'react';
+import React, { Fragment, createElement } from "react";
 
-import Repo from 'components/repo';
-import Product from 'components/product';
+import Repo from "components/repo";
+import Product from "components/product";
 
 export const render = (component, enhancement) => (props, index) =>
   createElement(component, { ...props, ...enhancement, index, key: index });
+
+export const last = collection => collection.slice(-1).pop();
+
+export const Logger = props => (
+  <pre
+    style={{
+      backgroundColor: "#000",
+      color: "#fff",
+      padding: "10px",
+      position: "fixed",
+      right: 0,
+      top: 0,
+      width: "40%"
+    }}
+  >
+    {JSON.stringify(props, null, 2)}
+  </pre>
+);
 
 export default ({
   repos = [],
@@ -12,15 +30,25 @@ export default ({
   toggleRepoLike,
   removeProduct,
   testing,
-  nested: { methods: { are: { here } } },
+  nested: {
+    methods: {
+      are: { here }
+    }
+  },
   fail,
-  listen,
+  listen
 }) => (
   <Fragment>
     <h1>Home();</h1>
+    {listen([
+      {
+        prop: "something",
+        path: ["*"]
+      }
+    ]).in(<Logger>{{ foo: "bar" }}</Logger>)}
     <button
       onClick={() =>
-        testing('sellics', 'amazon', 'isaque', { foo: 'bar' }, 123)
+        testing("sellics", "amazon", "isaque", { foo: "bar" }, 123)
       }
     >
       Click me
@@ -33,13 +61,14 @@ export default ({
         render(
           listen([
             {
+              prop: "likeStatus",
               method: toggleRepoLike,
               params: ({ index }) => [index],
-              prop: 'lol',
-            },
+              frequency: events => last(events)
+            }
           ]).in(Repo),
-          { like: toggleRepoLike },
-        ),
+          { like: toggleRepoLike }
+        )
       )}
     </section>
     <section>
@@ -48,13 +77,14 @@ export default ({
         render(
           listen([
             {
+              prop: "removeStatus",
               method: removeProduct,
               params: ({ index }) => [index],
-              prop: 'lol',
-            },
+              frequency: events => last(events)
+            }
           ]).in(Product),
-          { remove: removeProduct },
-        ),
+          { remove: removeProduct }
+        )
       )}
     </section>
   </Fragment>

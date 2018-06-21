@@ -2,7 +2,7 @@ import React from "react";
 
 import Item from "components/item";
 
-export default ({ index, remove, lol, ...props }) => (
+export default ({ index, remove, removeStatus, ...props }) => (
   <Item {...props}>
     <dd>
       <button onClick={() => remove(index)} style={{ fontSize: "1rem" }}>
@@ -10,7 +10,7 @@ export default ({ index, remove, lol, ...props }) => (
           ❌
         </span>
       </button>
-      <pre>{JSON.stringify(lol, null, 2)}</pre>
+      <pre>{JSON.stringify(removeStatus, null, 2)}</pre>
     </dd>
   </Item>
 );

@@ -2,13 +2,17 @@ import React from "react";
 
 import Item from "components/item";
 
-export default ({ index, liked, like, lol, ...props }) => (
+export default ({ index, liked, like, likeStatus = {}, ...props }) => (
   <Item {...props}>
     <dd>
-      <button onClick={() => like(index)} style={{ fontSize: "1rem" }}>
+      <button
+        onClick={() => like(index)}
+        style={{ cursor: "pointer", fontSize: "1rem" }}
+        disabled={likeStatus.loading}
+      >
         {liked ? "👍" : "👎"}
+        {likeStatus.loading && " loading..."}
       </button>
-      <pre>{JSON.stringify(lol, null, 2)}</pre>
     </dd>
   </Item>
 );

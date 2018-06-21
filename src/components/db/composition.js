@@ -1,19 +1,19 @@
-import md5 from 'md5';
-import { createElement } from 'react';
-import { compose, withStateHandlers, withProps, lifecycle } from 'recompose';
+import md5 from "md5";
+import { isValidElement, createElement, cloneElement } from "react";
+import { compose, withStateHandlers, withProps, lifecycle } from "recompose";
 
-import { RUN } from 'actions';
-import setStatics from 'helpers/rendering/statics/set';
+import { RUN } from "actions";
+import setStatics from "helpers/rendering/statics/set";
 
-import * as statics from './statics';
-import initialState from './initial-state';
-import * as reducers from './reducers';
+import * as statics from "./statics";
+import initialState from "./initial-state";
+import * as reducers from "./reducers";
 
 export const noop = () => {};
 
 export const getType = method => `${RUN}: ${method}`;
 
-export const printArgs = params => params.map(JSON.stringify).join(', ');
+export const printArgs = params => params.map(JSON.stringify).join(", ");
 
 export const ensureArray = object =>
   Array.isArray(object) ? object : [object];
@@ -27,24 +27,47 @@ export const replace = (object, path = []) => ({
       return Object.assign(stack, {
         [key]: deep
           ? replace(value, location).with(replacement)
-          : replacement(location, value),
+          : replacement(location, value)
       });
-    }, {}),
+    }, {})
 });
 
-export const listen = listenable => listeners => {
-  console.log(
-    ensureArray(listeners).reduce((stack, { method: { fingerprint } }) => {
-      const broadcast = listenable[fingerprint];
-
-      return broadcast ? stack.concat(broadcast) : stack;
-    }, []),
-  );
+export const listen = listenable => settings => {
+  const listeners = ensureArray(settings);
 
   return {
-    in: component => props => {
-      return createElement(component, { ...props });
-    },
+    in: component => {
+      return isValidElement(component)
+        ? cloneElement(component, {
+            hue: "BR"
+          })
+        : props => {
+            const status = listeners.reduce(
+              (stack, { prop, method: { fingerprint }, params, frequency }) => {
+                const channel = listenable[fingerprint] || {};
+                const events = Object.entries(channel).reduce(
+                  (stack, [timestamp, details]) => {
+                    const match = !!~details.params
+                      .toString()
+                      .indexOf(params(props).toString());
+
+                    return !match
+                      ? stack
+                      : stack.concat({ ...details, timestamp });
+                  },
+                  []
+                );
+
+                return Object.assign(stack, {
+                  [prop]: frequency ? frequency(events) : events
+                });
+              },
+              {}
+            );
+
+            return createElement(component, { ...props, ...status });
+          };
+    }
   };
 };
 
@@ -55,7 +78,7 @@ export default compose(
     const { network, dispatch, register } = props;
     const { displayName, DB = Object.create } = component;
     const methods = replace(DB(props)).with((path, method) => {
-      const namespace = [displayName, ...path].join('.');
+      const namespace = [displayName, ...path].join(".");
       const fingerprint = md5(method);
 
       return Object.assign(
@@ -65,7 +88,7 @@ export default compose(
           register({
             fingerprint,
             timestamp,
-            details: { loading: true, params },
+            details: { loading: true, params }
           });
 
           return method(...params)
@@ -73,27 +96,27 @@ export default compose(
               register({
                 fingerprint,
                 timestamp,
-                details: { loading: false, output },
+                details: { loading: false, output }
               });
 
               dispatch({
                 type: getType(`${namespace}(${printArgs(params)});`),
                 method: namespace,
                 params,
-                mutation,
+                mutation
               });
             })
             .catch(({ error }) =>
               register({
                 fingerprint,
                 timestamp,
-                details: { loading: false, error },
-              }),
+                details: { loading: false, error }
+              })
             );
         },
         {
-          fingerprint,
-        },
+          fingerprint
+        }
       );
     });
 
@@ -101,9 +124,11 @@ export default compose(
   }),
   lifecycle({
     componentDidMount() {
-      const { props: { load = noop } } = this;
+      const {
+        props: { load = noop }
+      } = this;
 
       load();
-    },
-  }),
+    }
+  })
 );
