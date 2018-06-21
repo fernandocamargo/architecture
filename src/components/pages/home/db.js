@@ -1,40 +1,48 @@
-import * as API from "api";
+import * as API from 'api';
 import {
   setRepos,
   setProducts,
   toggleRepoLikedByIndex,
   removeProduct,
   setTesting,
-  setNested
-} from "mutations";
+  setNested,
+} from 'mutations';
 
 export default props => ({
   load: () =>
     Promise.all([
       API.getGithubRepos(),
-      API.searchItunesContentFor("Merzbow")
-    ]).then(([repos, products]) => [setRepos(repos), setProducts(products)]),
+      API.searchItunesContentFor('Merzbow'),
+    ]).then(([repos, products]) => ({
+      mutation: [setRepos(repos), setProducts(products)],
+    })),
   toggleRepoLike: index =>
     new Promise(resolve =>
-      window.setTimeout(() => resolve(toggleRepoLikedByIndex(index)), 1000)
+      window.setTimeout(
+        () => resolve({ mutation: toggleRepoLikedByIndex(index) }),
+        1000,
+      ),
     ),
   removeProduct: index =>
     new Promise(resolve =>
-      window.setTimeout(() => resolve(removeProduct(index)), 1000)
+      window.setTimeout(
+        () => resolve({ mutation: removeProduct(index) }),
+        1000,
+      ),
     ),
-  testing: (...params) => Promise.resolve(setTesting(params)),
+  testing: (...params) => Promise.resolve({ mutation: setTesting(params) }),
   nested: {
     methods: {
       are: {
-        here: () => Promise.resolve(setNested())
-      }
-    }
+        here: () => Promise.resolve({ mutation: setNested() }),
+      },
+    },
   },
   fail: () =>
     new Promise((resolve, reject) =>
       window.setTimeout(
-        () => reject({ code: 404, reason: "Something went wrong" }),
-        1000
-      )
-    )
+        () => reject({ error: { code: 404, reason: 'Something went wrong' } }),
+        1000,
+      ),
+    ),
 });

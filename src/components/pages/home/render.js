@@ -1,7 +1,7 @@
-import React, { Fragment, createElement } from "react";
+import React, { Fragment, createElement } from 'react';
 
-import Repo from "components/repo";
-import Product from "components/product";
+import Repo from 'components/repo';
+import Product from 'components/product';
 
 export const render = (component, enhancement) => (props, index) =>
   createElement(component, { ...props, ...enhancement, index, key: index });
@@ -12,19 +12,15 @@ export default ({
   toggleRepoLike,
   removeProduct,
   testing,
-  nested: {
-    methods: {
-      are: { here }
-    }
-  },
+  nested: { methods: { are: { here } } },
   fail,
-  watch
+  listen,
 }) => (
   <Fragment>
     <h1>Home();</h1>
     <button
       onClick={() =>
-        testing("sellics", "amazon", "isaque", { foo: "bar" }, 123)
+        testing('sellics', 'amazon', 'isaque', { foo: 'bar' }, 123)
       }
     >
       Click me
@@ -35,30 +31,30 @@ export default ({
       <h2>Some repos</h2>
       {repos.map(
         render(
-          watch([
+          listen([
             {
               method: toggleRepoLike,
               params: ({ index }) => [index],
-              prop: "lol"
-            }
+              prop: 'lol',
+            },
           ]).in(Repo),
-          { like: toggleRepoLike }
-        )
+          { like: toggleRepoLike },
+        ),
       )}
     </section>
     <section>
       <h2>Merzbow products</h2>
       {products.map(
         render(
-          watch([
+          listen([
             {
               method: removeProduct,
               params: ({ index }) => [index],
-              prop: "lol"
-            }
+              prop: 'lol',
+            },
           ]).in(Product),
-          { remove: removeProduct }
-        )
+          { remove: removeProduct },
+        ),
       )}
     </section>
   </Fragment>
