@@ -6,7 +6,7 @@ import Product from "components/product";
 export const render = (component, enhancement) => (props, index) =>
   createElement(component, { ...props, ...enhancement, index, key: index });
 
-export const last = collection => collection.slice(-1).pop();
+export const latest = collection => collection.slice(-1).pop();
 
 export const Logger = props => (
   <pre
@@ -17,7 +17,7 @@ export const Logger = props => (
       position: "fixed",
       right: 0,
       top: 0,
-      width: "40%"
+      width: "50%"
     }}
   >
     {JSON.stringify(props, null, 2)}
@@ -64,7 +64,7 @@ export default ({
               prop: "likeStatus",
               method: toggleRepoLike,
               params: ({ index }) => [index],
-              frequency: events => last(events)
+              frequency: events => latest(events)
             }
           ]).in(Repo),
           { like: toggleRepoLike }
@@ -80,7 +80,7 @@ export default ({
               prop: "removeStatus",
               method: removeProduct,
               params: ({ index }) => [index],
-              frequency: events => last(events)
+              frequency: events => latest(events)
             }
           ]).in(Product),
           { remove: removeProduct }

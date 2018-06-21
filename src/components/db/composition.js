@@ -34,40 +34,31 @@ export const replace = (object, path = []) => ({
 
 export const listen = listenable => settings => {
   const listeners = ensureArray(settings);
+  const getListenersFrom = props =>
+    listeners.reduce((stack, { prop, method = {}, params, frequency }) => {
+      const { fingerprint } = method;
+      const channel = listenable[fingerprint] || {};
+      const events = Object.entries(channel).reduce(
+        (stack, [timestamp, details]) => {
+          const match = !!~details.params
+            .toString()
+            .indexOf(params(props).toString());
+
+          return !match ? stack : stack.concat({ ...details, timestamp });
+        },
+        []
+      );
+      const broadcast = frequency ? frequency(events) : events;
+
+      return Object.assign(stack, { [prop]: broadcast });
+    }, {});
 
   return {
-    in: component => {
-      return isValidElement(component)
-        ? cloneElement(component, {
-            hue: "BR"
-          })
-        : props => {
-            const status = listeners.reduce(
-              (stack, { prop, method: { fingerprint }, params, frequency }) => {
-                const channel = listenable[fingerprint] || {};
-                const events = Object.entries(channel).reduce(
-                  (stack, [timestamp, details]) => {
-                    const match = !!~details.params
-                      .toString()
-                      .indexOf(params(props).toString());
-
-                    return !match
-                      ? stack
-                      : stack.concat({ ...details, timestamp });
-                  },
-                  []
-                );
-
-                return Object.assign(stack, {
-                  [prop]: frequency ? frequency(events) : events
-                });
-              },
-              {}
-            );
-
-            return createElement(component, { ...props, ...status });
-          };
-    }
+    in: component =>
+      isValidElement(component)
+        ? cloneElement(component, getListenersFrom())
+        : props =>
+            createElement(component, { ...props, ...getListenersFrom(props) })
   };
 };
 
@@ -88,7 +79,7 @@ export default compose(
           register({
             fingerprint,
             timestamp,
-            details: { loading: true, params }
+            details: { loading: true, params, path }
           });
 
           return method(...params)
@@ -119,6 +110,9 @@ export default compose(
         }
       );
     });
+
+    console.clear();
+    console.log(JSON.stringify(network, null, 2));
 
     return { ...methods, listen: listen(network) };
   }),
