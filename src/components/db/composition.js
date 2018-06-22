@@ -35,7 +35,7 @@ export const replace = (object, path = []) => ({
 export const listen = listenable => settings => {
   const listeners = ensureArray(settings);
   const getListenersFrom = props =>
-    listeners.reduce((stack, { prop, method = {}, params, frequency }) => {
+    listeners.reduce((stack, { prop, method = {}, params, format }) => {
       const { fingerprint } = method;
       const channel = listenable[fingerprint] || {};
       const events = Object.entries(channel).reduce(
@@ -48,7 +48,7 @@ export const listen = listenable => settings => {
         },
         []
       );
-      const broadcast = frequency ? frequency(events) : events;
+      const broadcast = format ? format(events) : events;
 
       return Object.assign(stack, { [prop]: broadcast });
     }, {});

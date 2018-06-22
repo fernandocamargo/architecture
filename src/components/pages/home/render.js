@@ -64,7 +64,7 @@ export default ({
               prop: "likeStatus",
               method: toggleRepoLike,
               params: ({ index }) => [index],
-              frequency: events => latest(events)
+              format: events => latest(events)
             }
           ]).in(Repo),
           { like: toggleRepoLike }
@@ -80,7 +80,7 @@ export default ({
               prop: "removeStatus",
               method: removeProduct,
               params: ({ index }) => [index],
-              frequency: events => latest(events)
+              format: events => latest(events)
             }
           ]).in(Product),
           { remove: removeProduct }
