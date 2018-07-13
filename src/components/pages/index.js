@@ -15,16 +15,12 @@ export const load = promise =>
       connectDB(component).with(props)
   });
 
-export const Login = load(() =>
-  import("components/pages/login" /* webpackChunkName: "login" */)
+export const Overview = load(() =>
+  import("components/pages/overview" /* webpackChunkName: "overview" */)
 );
 
-export const Home = load(() =>
-  import("components/pages/home" /* webpackChunkName: "home" */)
-);
-
-export const Profile = load(() =>
-  import("components/pages/profile" /* webpackChunkName: "profile" */)
+export const Costs = load(() =>
+  import("components/pages/costs" /* webpackChunkName: "costs" */)
 );
 
 export const NotFound = load(

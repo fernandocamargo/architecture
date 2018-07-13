@@ -1,0 +1,137 @@
+[
+  {
+    "item": {
+      "productName": "Emma & Noah Mullwindeln, 10er Pack, kochfest 90C, 2-lagig, 100% Baumwolle, 70x70 cm, extra weich und saugfhig, Farbe: Wei, Spucktcher, Baby Tu",
+      "customName": "Emma & Noah Mullwindeln, 10er Pack, kochfest 90C, 2-lagig, 100% Baumwolle, 70x70 cm, extra weich und saugfhig, Farbe: Wei, Spucktcher, Baby Tu",
+      "starred": false
+    },
+    "pk": {
+      "salesChannel": {
+        "marketplace": {
+          "marketplaceId": ""
+        },
+        "name": ""
+      },
+      "sku": "WP-6CKJ-L9IW",
+      "amazonOrderId": ""
+    },
+    "salesChannel": {
+      "marketplace": {
+        "marketplaceId": ""
+      }
+    },
+    "sellerId": "",
+    "asin": "B01MDNZDNH",
+    "childAsin": "",
+    "itemPrice": 16.90,
+    "itemCostAbs": 3.22,
+    "shippingPrice": 0,
+    "shippingCostAbs": 6.0,
+    "totalCostsAbs": 20.05,
+    "quantity": 0,
+    "promos": 0,
+    "profit": 0,
+    "margin": 0,
+    "income": 0,
+    "ppcSales": 0,
+    "fbaFees": 0,
+    "fbaFeesAbs": 4.71,
+    "amznFees": 0,
+    "amazonFeesAbs": 4.46,
+    "promoFees": 0,
+    "productCosts": 0,
+    "taxes": 0,
+    "ppcFees": 0,
+    "fulfillmentChannel": "A"
+  },
+  {
+    "item": {
+      "productName": "Emma & Noah Babytrage, ergonomisch fr Kind und Eltern, 3-in-1 Trage, empfohlen von 6-36 Monate, zugelassen fr 3,6-15 kg, Rot, Kindertrage, Baby-Tr",
+      "customName": "Emma & Noah Babytrage, ergonomisch fr Kind und Eltern, 3-in-1 Trage, empfohlen von 6-36 Monate, zugelassen fr 3,6-15 kg, Rot, Kindertrage, Baby-Tr",
+      "starred": true
+    },
+    "pk": {
+      "salesChannel": {
+        "marketplace": {
+          "marketplaceId": ""
+        },
+        "name": ""
+      },
+      "sku": "1C-OA2N-CI51",
+      "amazonOrderId": ""
+    },
+    "salesChannel": {
+      "marketplace": {
+        "marketplaceId": ""
+      }
+    },
+    "sellerId": "",
+    "asin": "B01LDFK01O",
+    "childAsin": "",
+    "itemPrice": 39.90,
+    "itemCostAbs": 3.26,
+    "shippingPrice": 0,
+    "shippingCostAbs": 6.0,
+    "totalCostsAbs": 20.64,
+    "quantity": 0,
+    "promos": 0,
+    "profit": 0,
+    "margin": 0,
+    "income": 0,
+    "ppcSales": 0,
+    "fbaFees": 0,
+    "fbaFeesAbs": 4.71,
+    "amznFees": 0,
+    "amazonFeesAbs": 4.46,
+    "promoFees": 0,
+    "productCosts": 0,
+    "taxes": 0,
+    "ppcFees": 0,
+    "fulfillmentChannel": "A"
+  },
+  {
+    "item": {
+      "productName": "Emma & Noah Babytrage, ergonomisch fr Kind und Eltern, 3-in-1 Trage, empfohlen von 6-36 Monate, zugelassen fr 3,6-15 kg, Blau, Kindertrage, Baby-T",
+      "customName": "Emma & Noah Babytrage, ergonomisch fr Kind und Eltern, 3-in-1 Trage, empfohlen von 6-36 Monate, zugelassen fr 3,6-15 kg, Blau, Kindertrage, Baby-T",
+      "starred": false
+    },
+    "pk": {
+      "salesChannel": {
+        "marketplace": {
+          "marketplaceId": ""
+        },
+        "name": ""
+      },
+      "sku": "1F-WPYA-V90I",
+      "amazonOrderId": ""
+    },
+    "salesChannel": {
+      "marketplace": {
+        "marketplaceId": ""
+      }
+    },
+    "sellerId": "",
+    "asin": "B01LDFK01E",
+    "childAsin": "",
+    "itemPrice": 39.90,
+    "itemCostAbs": 3.26,
+    "shippingPrice": 0,
+    "shippingCostAbs": 0,
+    "totalCostsAbs": 10.02,
+    "quantity": 0,
+    "promos": 0,
+    "profit": 0,
+    "margin": 0,
+    "income": 0,
+    "ppcSales": 0,
+    "fbaFees": 0,
+    "fbaFeesAbs": 3.19,
+    "amznFees": 0,
+    "amazonFeesAbs": 3.57,
+    "promoFees": 0,
+    "productCosts": 0,
+    "taxes": 0,
+    "ppcFees": 0,
+    "fulfillmentChannel": "A"
+  }
+]

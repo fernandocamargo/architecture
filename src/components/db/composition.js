@@ -111,9 +111,6 @@ export default compose(
       );
     });
 
-    console.clear();
-    console.log(JSON.stringify(network, null, 2));
-
     return { ...methods, listen: listen(network) };
   }),
   lifecycle({

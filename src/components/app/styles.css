@@ -1,0 +1,12 @@
+html {
+  background-color: rgba(102, 132, 177, 0.09);
+}
+
+body {
+  font-size: 16px;
+}
+
+.app {
+  padding: 1rem;
+}
+
