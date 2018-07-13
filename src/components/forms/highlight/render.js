@@ -8,8 +8,7 @@ export default ({ highlighted, onChange }) => (
       {
         name: "highlighted",
         type: "checkbox",
-        value: true,
-        checked: highlighted
+        value: highlighted
       }
     ]}
     onChange={onChange}

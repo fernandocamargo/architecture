@@ -1,13 +1,10 @@
 import React from "react";
 
-export default ({ title, label, value, ...field }) => (
+export default ({ fields, ...props }) => (
   <form>
     <fieldset>
-      {title && <legend>{title}</legend>}
-      <div className="field text">
-        {label && <label htmlFor="">{label}</label>}
-        <input type="text" defaultValue={value} {...field} />
-      </div>
+      <pre>{JSON.stringify(props, null, 2)}</pre>
+      {fields}
     </fieldset>
   </form>
 );
