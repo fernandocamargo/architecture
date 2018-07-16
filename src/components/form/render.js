@@ -1,9 +1,9 @@
 import React from "react";
 
-export default ({ fields, ...props }) => (
-  <form>
+export default ({ submit, title, fields }) => (
+  <form onSubmit={submit}>
     <fieldset>
-      <pre>{JSON.stringify(props, null, 2)}</pre>
+      {title && <legend>{title}</legend>}
       {fields}
     </fieldset>
   </form>

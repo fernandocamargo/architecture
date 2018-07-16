@@ -1,8 +1,53 @@
-[
-  {
-    "starred": true
+{
+  "meta": {
+    "query": "",
+    "items": 109,
+    "pagination": {
+      "itemsPerPage": "",
+      "current": 2,
+      "total": 11
+    }
   },
-  {
-    "starred": false
-  }
-]
+  "results": [
+    {
+      "item": {
+        "productName": "EMMA & NOAH Muslin Swaddle Blankets, 4 Pack, 100% Cotton, 31.5 x 31.5 inch, Blue",
+        "customName": "",
+        "starred": 0
+      },
+      "pk": {
+        "sku": "L9-XJZQ-A9ZO"
+      },
+      "images": {
+        "thumbnail": "https://images-eu.ssl-images-amazon.com/images/P/B075F9DP9G.00-A1X5X642EK8IV9.THUMB.jpg",
+        "medium": "https://images-eu.ssl-images-amazon.com/images/P/B075F9DP9G.00-A1X5X642EK8IV9.SCM.jpg"
+      },
+      "links": {
+        "amazon": "https://www.amazon.com/gp/product/B075F9DP9G",
+        "sellerCentral": "https://catalog.amazon.com/abis/product/DisplayEditProduct?sku=L9-XJZQ-A9ZO&asin=B075F9DP9G&marketplaceID=ATVPDKIKX0DER#offer"
+      },
+      "asin": "B075F9DP9G",
+      "itemPrice": 49.98
+    },
+    {
+      "item": {
+        "productName": "Emma & Noah Muslin Swaddle Blankets, 4 Pack, 100% Cotton, 31.5 x 31.5 inch, Pink",
+        "customName": "Emma & Noah Muslin Swaddle Blankets, 4 Pack, 100% Cotton, 31.5 x 31.5 inch, Pink (custom)",
+        "starred": 1
+      },
+      "pk": {
+        "sku": "NM-RP5F-2GPA"
+      },
+      "images": {
+        "thumbnail": "https://images-eu.ssl-images-amazon.com/images/P/B075F7XN9V.00-A1X5X642EK8IV9.THUMB.jpg",
+        "medium": "https://images-eu.ssl-images-amazon.com/images/P/B075F7XN9V.00-A1X5X642EK8IV9.SCM.jpg"
+      },
+      "links": {
+        "amazon": "https://www.amazon.com/gp/product/B075F7XN9V",
+        "sellerCentral": "https://catalog.amazon.com/abis/product/DisplayEditProduct?sku=NM-RP5F-2GPA&asin=B075F7XN9V&marketplaceID=ATVPDKIKX0DER#offer"
+      },
+      "asin": "B075F7XN9V",
+      "itemPrice": 49.98
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import Page from "components/page";
 import Widget from "components/widget";
 import { Waterfall as ChartWaterFall } from "components/charts";
 import { Sales as TableSales } from "components/tables";
-import sales from "mock/sales.json";
+import { results as sales } from "mock/sales.json";
 
 export default () => (
   <Page title="Overview">

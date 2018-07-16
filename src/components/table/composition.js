@@ -1,3 +1,4 @@
+import { isValidElement, createElement } from "react";
 import { compose, withProps } from "recompose";
 
 import setStatics from "helpers/rendering/statics/set";
@@ -6,7 +7,7 @@ import ensureArray from "helpers/array/ensure";
 import * as statics from "./statics";
 
 export const formatColumn = ({ label, ...column }) => ({
-  children: label,
+  children: isValidElement(label) ? label : createElement(label),
   ...column
 });
 

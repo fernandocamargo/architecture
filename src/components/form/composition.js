@@ -1,34 +1,33 @@
 import { createElement } from "react";
-import { compose, withStateHandlers, withProps } from "recompose";
+import { compose, withStateHandlers, withHandlers, withProps } from "recompose";
 
 import setStatics from "helpers/rendering/statics/set";
 import * as Fields from "components/fields";
 
 import * as statics from "./statics";
-
-console.log({ createElement });
-
-export const getInitialState = ({ fields }) => ({
-  data: fields.reduce(
-    (stack, { name, value }) =>
-      Object.assign(stack, {
-        [name]: value
-      }),
-    {}
-  ),
-  original: false,
-  debugging: false
-});
+import initialState from "./initial-state";
+import * as reducers from "./reducers";
 
 export default compose(
   setStatics(statics),
-  withStateHandlers(getInitialState, {}),
-  withProps(({ fields, data }) => ({
-    fields: fields.map(({ name, type }) =>
+  withStateHandlers(initialState, reducers),
+  withHandlers({
+    submit: ({ onSubmit, data }) => event => {
+      event.preventDefault();
+      onSubmit(data);
+    }
+  }),
+  withProps(({ fields, data, change, onChange }) => ({
+    fields: fields.map(({ name, type, label, settings }) =>
       createElement(Fields[type], {
-        key: name,
+        onChange: value => change({ name, value }),
+        id: String(new Date().getTime()),
         value: data[name],
-        onChange: () => {}
+        key: name,
+        type,
+        name,
+        label,
+        ...settings
       })
     )
   }))

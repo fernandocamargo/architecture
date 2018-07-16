@@ -1,7 +1,14 @@
 import React from "react";
 
-export default ({ value, onChange }) => (
+export default ({ id, label, value, change }) => (
   <div>
-    <input type="checkbox" value="true" checked={value} onChange={onChange} />
+    <input
+      id={id}
+      type="checkbox"
+      value="true"
+      checked={value}
+      onChange={change}
+    />
+    {label && <label htmlFor={id}>{label}</label>}
   </div>
 );

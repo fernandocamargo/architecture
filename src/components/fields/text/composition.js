@@ -7,6 +7,6 @@ import * as statics from "./statics";
 export default compose(
   setStatics(statics),
   withHandlers({
-    change: ({ onChange }) => ({ target: { checked } }) => onChange(checked)
+    change: ({ onChange }) => ({ target: { value } }) => onChange(value)
   })
 );
