@@ -72,24 +72,43 @@ export const getColumns = () => [
     content: ({ itemPrice }) => <Currency>{itemPrice}</Currency>
   },
   {
-    identity: "units",
-    label: "Units",
-    content: ({ quantity }) => quantity
+    identity: "orders",
+    label: "Orders",
+    content: ({ orders }) => orders
   },
   {
-    identity: "promos",
-    label: "Promos",
-    content: ({ promos }) => promos
+    identity: "refunds",
+    label: "Refunds",
+    content: ({ refunds }) => refunds
   },
   {
     identity: "profit",
-    label: "Profit",
+    label: "Profit ($)",
     content: ({ profit }) => <Currency>{profit}</Currency>
   },
   {
     identity: "margin",
-    label: "Margin",
+    label: "Margin (%)",
     content: ({ margin }) => <Currency>{margin}</Currency>
+  },
+  {
+    identity: "amazon-link",
+    label: () => <i>Info</i>,
+    content: ({ links: { amazon } }) => (
+      <a href={amazon} title="Link to Amazon">
+        Link to Amazon
+      </a>
+    )
+  },
+  {
+    identity: "details",
+    label: () => "Details",
+    content: () => (
+      <Fragment>
+        <button>Calculator</button>
+        <button>Chart</button>
+      </Fragment>
+    )
   }
 ];
 

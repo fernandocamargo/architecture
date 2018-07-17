@@ -28,8 +28,8 @@
       },
       "asin": "B075F9DP9G",
       "itemPrice": 49.98,
-      "quantity": 3,
-      "promos": 0,
+      "orders": 3,
+      "refunds": 0,
       "profit": 23.19,
       "margin": 30.93,
       "variations": []
@@ -53,8 +53,8 @@
       },
       "asin": "B075F7XN9V",
       "itemPrice": 49.98,
-      "quantity": 1,
-      "promos": 0,
+      "orders": 1,
+      "refunds": 0,
       "profit": 4.35,
       "margin": 17.41,
       "variations": []
