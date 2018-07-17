@@ -6,8 +6,11 @@ import ensureArray from "helpers/array/ensure";
 
 import * as statics from "./statics";
 
+export const isString = object => typeof object === "string";
+
 export const formatColumn = ({ label, ...column }) => ({
-  children: isValidElement(label) ? label : createElement(label),
+  children:
+    isValidElement(label) || isString(label) ? label : createElement(label),
   ...column
 });
 

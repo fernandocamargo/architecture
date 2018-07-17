@@ -27,7 +27,12 @@
         "sellerCentral": "https://catalog.amazon.com/abis/product/DisplayEditProduct?sku=L9-XJZQ-A9ZO&asin=B075F9DP9G&marketplaceID=ATVPDKIKX0DER#offer"
       },
       "asin": "B075F9DP9G",
-      "itemPrice": 49.98
+      "itemPrice": 49.98,
+      "quantity": 3,
+      "promos": 0,
+      "profit": 23.19,
+      "margin": 30.93,
+      "variations": []
     },
     {
       "item": {
@@ -47,7 +52,12 @@
         "sellerCentral": "https://catalog.amazon.com/abis/product/DisplayEditProduct?sku=NM-RP5F-2GPA&asin=B075F7XN9V&marketplaceID=ATVPDKIKX0DER#offer"
       },
       "asin": "B075F7XN9V",
-      "itemPrice": 49.98
+      "itemPrice": 49.98,
+      "quantity": 1,
+      "promos": 0,
+      "profit": 4.35,
+      "margin": 17.41,
+      "variations": []
     }
   ]
 }
