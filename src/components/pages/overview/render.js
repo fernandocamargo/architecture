@@ -7,7 +7,13 @@ import { Waterfall as ChartWaterFall } from "components/charts";
 import { Sales as TableSales } from "components/tables";
 import Pagination from "components/pagination";
 
-export default ({ sales: { meta, results: sales } }) => (
+export default ({
+  sales: {
+    meta: { query, pagination },
+    results: sales
+  },
+  searchSalesBy
+}) => (
   <Page title="Overview">
     <Widget>
       <ChartWaterFall
@@ -19,36 +25,47 @@ export default ({ sales: { meta, results: sales } }) => (
       />
     </Widget>
     <Widget>
-      <h2>Sales per ASIN</h2>
-      <nav>
-        <h4>Actions:</h4>
-        <li>
-          <a href="" title="Export">
-            Export
-          </a>
-        </li>
-        <li>
-          <a href="" title="Edit">
-            Edit
-          </a>
-        </li>
-        <li>
-          <a href="" title="Settings">
-            Settings
-          </a>
-        </li>
-      </nav>
-      <TableSales
-        rows={sales}
-        onSort={({ column, order }) =>
-          console.log("onSort();", { column, order })
-        }
-        onSearch={({ query }) => console.log("onSearch();", { query })}
-      />
-      <Pagination
-        {...meta.pagination}
-        onPaginate={({ page }) => console.log("onPaginate();", { page })}
-      />
+      <div>
+        <h2>Sales per ASIN</h2>
+        <nav>
+          <h4>Actions:</h4>
+          <li>
+            <a href="" title="Export">
+              Export
+            </a>
+          </li>
+          <li>
+            <a href="" title="Edit">
+              Edit
+            </a>
+          </li>
+          <li>
+            <a href="" title="Settings">
+              Settings
+            </a>
+          </li>
+        </nav>
+      </div>
+      <div
+        style={{
+          border: "solid 1px #000",
+          borderRadius: "10px",
+          overflow: "hidden"
+        }}
+      >
+        <TableSales
+          rows={sales}
+          onSort={({ column, order }) =>
+            console.log("onSort();", { column, order })
+          }
+          onSearch={({ query }) => searchSalesBy({ query })}
+          query={query}
+        />
+        <Pagination
+          {...pagination}
+          onPaginate={({ page }) => console.log("onPaginate();", { page })}
+        />
+      </div>
     </Widget>
   </Page>
 );

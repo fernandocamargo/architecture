@@ -7,7 +7,7 @@ import { ProductSearch as FormProductSearch } from "components/forms";
 import Zoom from "components/zoom";
 import Currency from "components/currency";
 
-export const getColumns = () => [
+export const getColumnsFrom = ({ query, onSearch }) => [
   {
     identity: "starred",
     label: <IconStar />,
@@ -24,9 +24,7 @@ export const getColumns = () => [
       <Fragment>
         <span>Product</span>
         {sorter}
-        <FormProductSearch
-          onSubmit={data => console.log("FormProductSearch.onSubmit();", data)}
-        />
+        <FormProductSearch query={query} onSubmit={onSearch} />
       </Fragment>
     ),
     content: ({
@@ -112,8 +110,8 @@ export const getColumns = () => [
   }
 ];
 
-export default ({ rows }) => (
-  <Table columns={getColumns()} rows={rows}>
-    {({ variations }) => <Table columns={getColumns()} rows={variations} />}
-  </Table>
-);
+export default props => {
+  const { rows } = props;
+
+  return <Table columns={getColumnsFrom(props)} rows={rows} />;
+};

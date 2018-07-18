@@ -1,14 +1,10 @@
 import times from "lodash/times";
 import random from "lodash/random";
+import compact from "lodash/compact";
 import faker from "faker";
 
-const items = random(5, 100);
 const itemsPerPage = 10;
-const pages = Math.ceil(items / itemsPerPage);
-const images = {
-  thumbnail: faker.image.technics(75, 75),
-  medium: faker.image.technics(160, 160)
-};
+const size = random(5, 100);
 
 const decrease = number => number - 1;
 
@@ -21,7 +17,20 @@ const getPrice = (...params) => parseFloat(faker.finance.amount(...params));
 const getProductName = page =>
   `${faker.commerce.productName()} (page #${page})`;
 
-const results = times(items, index => {
+const find = criteria => ({
+  in: collection =>
+    !criteria ||
+    !!compact(
+      collection.map(
+        value =>
+          !!~String(value)
+            .toLowerCase()
+            .indexOf(criteria.toLowerCase())
+      )
+    ).length
+});
+
+const resource = times(size, index => {
   const page = Math.ceil(increase(index) / itemsPerPage);
   const itemPrice = getPrice(10, 150);
   const profit = getPrice(itemPrice * 0.3, itemPrice * 0.75);
@@ -42,26 +51,33 @@ const results = times(items, index => {
       amazon: faker.internet.url(),
       sellerCentral: faker.internet.url()
     },
+    images: {
+      thumbnail: `https://placeimg.com/75/75/tech?${random()}`,
+      medium: `https://placeimg.com/160/160/tech?${random()}`
+    },
     asin: faker.random.alphaNumeric(10).toUpperCase(),
     orders: random(1, 50),
     refunds: random(1, 15),
     margin: random(1, 25),
     variations: [],
     itemPrice,
-    profit,
-    images
+    profit
   };
 });
 
 export const getSales = ({ page = 1, query = "" } = {}) => {
+  const results = resource.filter(
+    ({ item: { productName, customName }, pk: { sku }, asin }) =>
+      find(query).in([productName, customName, sku, asin])
+  );
+
   return {
     meta: {
       pagination: {
-        total: pages,
+        total: Math.ceil(results.length / itemsPerPage),
         current: page,
         itemsPerPage
       },
-      items,
       query
     },
     results: results.slice(paginate(decrease(page)), paginate(page))

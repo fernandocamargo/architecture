@@ -5,6 +5,7 @@ import setStatics from "helpers/rendering/statics/set";
 import ensureArray from "helpers/array/ensure";
 
 import * as statics from "./statics";
+import withStyle from "./style";
 
 export const isString = object => typeof object === "string";
 
@@ -27,5 +28,6 @@ export default compose(
   withProps(({ columns, rows }) => ({
     columns: ensureArray(columns).map(formatColumn),
     rows: ensureArray(rows).map(extractRowFrom(columns))
-  }))
+  })),
+  withStyle
 );
