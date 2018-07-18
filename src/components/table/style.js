@@ -18,7 +18,7 @@ export default component => styled(component)`
   }
 
   tbody {
-    height: 50vh;
+    height: 60vh;
     overflow: auto;
   }
 

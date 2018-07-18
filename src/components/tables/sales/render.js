@@ -111,7 +111,9 @@ export const getColumnsFrom = ({ query, onSearch }) => [
 ];
 
 export default props => {
-  const { rows } = props;
+  const { rows, className } = props;
 
-  return <Table columns={getColumnsFrom(props)} rows={rows} />;
+  return (
+    <Table columns={getColumnsFrom(props)} rows={rows} className={className} />
+  );
 };
