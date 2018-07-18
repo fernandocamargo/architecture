@@ -3,7 +3,7 @@
     "query": "",
     "items": 109,
     "pagination": {
-      "itemsPerPage": "",
+      "itemsPerPage": 10,
       "current": 2,
       "total": 11
     }

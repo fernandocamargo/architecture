@@ -6,9 +6,8 @@ import Widget from "components/widget";
 import { Waterfall as ChartWaterFall } from "components/charts";
 import { Sales as TableSales } from "components/tables";
 import Pagination from "components/pagination";
-import { meta, results as sales } from "mock/sales.json";
 
-export default () => (
+export default ({ sales: { meta, results: sales } }) => (
   <Page title="Overview">
     <Widget>
       <ChartWaterFall
@@ -39,8 +38,17 @@ export default () => (
           </a>
         </li>
       </nav>
-      <TableSales rows={sales} />
-      <Pagination {...meta.pagination} />
+      <TableSales
+        rows={sales}
+        onSort={({ column, order }) =>
+          console.log("onSort();", { column, order })
+        }
+        onSearch={({ query }) => console.log("onSearch();", { query })}
+      />
+      <Pagination
+        {...meta.pagination}
+        onPaginate={({ page }) => console.log("onPaginate();", { page })}
+      />
     </Widget>
   </Page>
 );
