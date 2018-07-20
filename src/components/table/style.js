@@ -15,6 +15,10 @@ export default component => styled(component)`
     border-bottom: solid 1px #e7e9ec;
     padding-right: 18px;
     width: calc(100% - 18px);
+
+    td {
+      font-weight: bold;
+    }
   }
 
   tbody {

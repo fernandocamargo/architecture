@@ -12,7 +12,8 @@ export default ({
     meta: { query, pagination },
     results: sales
   },
-  searchSalesBy
+  searchSalesBy,
+  showSalesAt
 }) => (
   <Page title="Overview">
     <Widget>
@@ -58,13 +59,10 @@ export default ({
           onSort={({ column, order }) =>
             console.log("onSort();", { column, order })
           }
-          onSearch={({ query }) => searchSalesBy({ query })}
+          onSearch={searchSalesBy}
           query={query}
         />
-        <Pagination
-          {...pagination}
-          onPaginate={({ page }) => console.log("onPaginate();", { page })}
-        />
+        <Pagination {...pagination} onPaginate={showSalesAt} />
       </div>
     </Widget>
   </Page>

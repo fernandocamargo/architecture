@@ -9,5 +9,9 @@ export default props => ({
   searchSalesBy: ({ query }) =>
     Promise.resolve(getSales({ query })).then(sales => ({
       mutation: [setSales(sales)]
+    })),
+  showSalesAt: ({ page }) =>
+    Promise.resolve(getSales({ page })).then(sales => ({
+      mutation: [setSales(sales)]
     }))
 });

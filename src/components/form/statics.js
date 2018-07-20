@@ -14,6 +14,7 @@ export const propTypes = {
 };
 
 export const defaultProps = {
+  fields: [],
   onChange: noop,
   onSubmit: noop
 };

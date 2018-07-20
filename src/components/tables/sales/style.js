@@ -1,7 +1,5 @@
 import styled from "react-emotion";
 
-import Table from "components/table";
-
 export default component => styled(component)`
   td:nth-child(1) {
     width: 50px;
