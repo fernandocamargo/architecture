@@ -21,7 +21,6 @@ export default compose(
     fields: fields.map(({ name, type, label, settings }) =>
       createElement(Fields[type], {
         onChange: value => change({ name, value }),
-        id: String(new Date().getTime()),
         value: data[name],
         key: name,
         type,

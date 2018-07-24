@@ -4,6 +4,7 @@ import Form from "components/form";
 
 export default ({ current, total, move, onPaginate }) => (
   <div>
+    <pre style={{ fontSize: "2rem" }}>{JSON.stringify({ current })}</pre>
     <h3>
       <span>Total of pages</span> <strong>{total}</strong>
     </h3>
