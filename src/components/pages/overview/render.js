@@ -9,7 +9,7 @@ import Pagination from "components/pagination";
 import {
   Generic as GenericMessages,
   Actions as GenericActions
-} from "messages";
+} from "i18n/messages";
 
 export default ({
   intl: { formatMessage },

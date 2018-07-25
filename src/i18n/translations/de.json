@@ -1,8 +1,8 @@
 {
-  "actions.edit": "Bearbeiten",
+  "actions.edit": "Edit",
   "actions.export": "Export",
-  "actions.remove": "Löschen",
+  "actions.remove": "Remove",
   "generic.brand": "Sellics",
-  "generic.overview": "Überblick",
-  "generic.settings": "die Einstellungen"
+  "generic.overview": "Overview",
+  "generic.settings": "Settings"
 }

@@ -6,7 +6,7 @@ export const languages = ["en", "de", "pt"];
 
 export const [locale] = String(window.navigator.language).split("-");
 
-export const extractLocale = (stack, locale) =>
-  stack.concat([...locales[locale]]);
+export const extractLocale = (stack, language) =>
+  stack.concat([...locales[language]]);
 
 export default addLocaleData(languages.reduce(extractLocale, []));

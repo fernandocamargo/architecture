@@ -2,31 +2,31 @@
   {
     "id": "actions.edit",
     "defaultMessage": "Edit",
-    "filepath": "src/messages/actions/index.js"
+    "filepath": "src/i18n/messages/actions/index.js"
   },
   {
     "id": "actions.export",
     "defaultMessage": "Export",
-    "filepath": "src/messages/actions/index.js"
+    "filepath": "src/i18n/messages/actions/index.js"
   },
   {
     "id": "actions.remove",
     "defaultMessage": "Remove",
-    "filepath": "src/messages/actions/index.js"
+    "filepath": "src/i18n/messages/actions/index.js"
   },
   {
     "id": "generic.brand",
     "defaultMessage": "Sellics",
-    "filepath": "src/messages/generic/index.js"
+    "filepath": "src/i18n/messages/generic/index.js"
   },
   {
     "id": "generic.overview",
     "defaultMessage": "Overview",
-    "filepath": "src/messages/generic/index.js"
+    "filepath": "src/i18n/messages/generic/index.js"
   },
   {
     "id": "generic.settings",
     "defaultMessage": "Settings",
-    "filepath": "src/messages/generic/index.js"
+    "filepath": "src/i18n/messages/generic/index.js"
   }
 ]
