@@ -6,8 +6,13 @@ import Widget from "components/widget";
 import { Waterfall as ChartWaterFall } from "components/charts";
 import { Sales as TableSales } from "components/tables";
 import Pagination from "components/pagination";
+import {
+  Generic as GenericMessages,
+  Actions as GenericActions
+} from "messages";
 
 export default ({
+  intl: { formatMessage },
   sales: {
     meta: { query, pagination },
     results: sales
@@ -15,7 +20,7 @@ export default ({
   searchSalesBy,
   showSalesAt
 }) => (
-  <Page title="Overview">
+  <Page title={formatMessage(GenericMessages.overview)}>
     <Widget>
       <ChartWaterFall
         categories={[
@@ -31,18 +36,18 @@ export default ({
         <nav>
           <h4>Actions:</h4>
           <li>
-            <a href="" title="Export">
-              Export
+            <a href="" title={formatMessage(GenericActions.export)}>
+              {formatMessage(GenericActions.export)}
             </a>
           </li>
           <li>
-            <a href="" title="Edit">
-              Edit
+            <a href="" title={formatMessage(GenericActions.edit)}>
+              {formatMessage(GenericActions.edit)}
             </a>
           </li>
           <li>
-            <a href="" title="Settings">
-              Settings
+            <a href="" title={formatMessage(GenericMessages.settings)}>
+              {formatMessage(GenericMessages.settings)}
             </a>
           </li>
         </nav>

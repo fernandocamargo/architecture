@@ -41,9 +41,6 @@ const resource = times(size, index => {
       customName: !!random(0, 1) ? getProductName(page) : "",
       starred: random(0, 1)
     },
-    foo: {
-      bar: 1234
-    },
     pk: {
       sku: faker.random
         .uuid()

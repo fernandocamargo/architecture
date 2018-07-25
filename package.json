@@ -32,6 +32,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "i18n:extract": "react-intl-cra 'src/**/*.{js,jsx}' -o 'src/i18n/testing.json'",
+    "i18n:translate": "node ./i18n.js",
+    "i18n": "yarn run i18n:extract && yarn run i18n:translate"
+  },
+  "devDependencies": {
+    "react-intl-cra": "^0.3.3",
+    "react-intl-translations-manager": "^5.0.3"
   }
 }
