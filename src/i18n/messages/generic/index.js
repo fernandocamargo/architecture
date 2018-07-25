@@ -5,6 +5,10 @@ export default defineMessages({
     id: "generic.brand",
     defaultMessage: "Sellics"
   },
+  product: {
+    id: "generic.product",
+    defaultMessage: "Seller"
+  },
   overview: {
     id: "generic.overview",
     defaultMessage: "Overview"

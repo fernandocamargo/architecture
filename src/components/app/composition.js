@@ -8,6 +8,7 @@ import DB from "components/db";
 
 import * as statics from "./statics";
 import mapStateToProps from "./selectors";
+import withStyle from "./style";
 
 export const connectDB = component => ({
   with: props => createElement(DB, { ...props, component })
@@ -22,5 +23,6 @@ export default compose(
       ...props,
       connectDB
     })
-  }))
+  })),
+  withStyle
 );
