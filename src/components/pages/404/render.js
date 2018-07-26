@@ -1,10 +1,13 @@
-import React, { Fragment } from "react";
+import React from "react";
 
-export default props => (
-  <Fragment>
-    <pre style={{ border: "dotted 1px blue", padding: "10px" }}>
-      {JSON.stringify(props, null, 2)}
-    </pre>
-    <p>404();</p>
-  </Fragment>
+import Page from "components/page";
+import Widget from "components/widget";
+import { Generic as GenericMessages } from "i18n/messages";
+
+export default ({ intl: { formatMessage } }) => (
+  <Page title={formatMessage(GenericMessages["not-found"])}>
+    <Widget>
+      <h1>{formatMessage(GenericMessages["not-found"])}</h1>
+    </Widget>
+  </Page>
 );

@@ -16,5 +16,9 @@ export default defineMessages({
   settings: {
     id: "generic.settings",
     defaultMessage: "Settings"
+  },
+  "not-found": {
+    id: "generic.not-found",
+    defaultMessage: "Not found"
   }
 });
