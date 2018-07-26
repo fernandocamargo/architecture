@@ -1,48 +1,49 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 
+import Title from "components/title";
+import Menu from "components/menu";
 import { Generic as GenericMessages } from "i18n/messages";
 
-export const breadcrumb = (...fragments) => fragments.join(" :: ");
+export const getMenu = () => [
+  { title: "Cockpit", url: "/" },
+  { title: "Rankings", url: "/rankings" },
+  { title: "Reviews", url: "/reviews" },
+  { title: "Spy", url: "/spy" },
+  { title: "Inventory", url: "/inventory" },
+  {
+    title: "Profit",
+    url: "/profit",
+    children: [
+      { title: "Overview", url: "/profit" },
+      {
+        title: "Costs",
+        url: "/costs",
+        children: [
+          { title: "Expenses", url: "/expenses" },
+          { title: "FBM", url: "/fbm" }
+        ]
+      },
+      { title: "Profit & Loss", url: "/loss" },
+      { title: "Breakdown", url: "/breakdown" },
+      { title: "Returns", url: "/returns" },
+      { title: "Promos", url: "/promos" },
+      { title: "Global Overview", url: "/global" }
+    ]
+  },
+  { title: "PPC Manager", url: "/ppc-manager" }
+];
 
 export default ({ intl: { formatMessage }, title, children, className }) => (
   <div className={className}>
-    <Helmet>
-      <title>
-        {breadcrumb(
-          formatMessage(GenericMessages.brand),
-          formatMessage(GenericMessages.product),
-          title
-        )}
-      </title>
-    </Helmet>
+    <Title>
+      {[
+        formatMessage(GenericMessages.brand),
+        formatMessage(GenericMessages.product),
+        title
+      ]}
+    </Title>
     <header className="header">
-      <nav className="menu">
-        <ul>
-          <li>
-            <Link to="/">Overview</Link>
-          </li>
-          <li>
-            <Link to="/costs">Costs</Link>
-          </li>
-          <li>
-            <Link to="/profit-and-loss">Profit & Loss</Link>
-          </li>
-          <li>
-            <Link to="/breakdown">Breakdown</Link>
-          </li>
-          <li>
-            <Link to="/returns">Returns</Link>
-          </li>
-          <li>
-            <Link to="/promos">Promos</Link>
-          </li>
-          <li>
-            <Link to="/global">Global Overview</Link>
-          </li>
-        </ul>
-      </nav>
+      <Menu>{getMenu()}</Menu>
     </header>
     <main role="main" className="content">
       {children}

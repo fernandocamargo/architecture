@@ -20,5 +20,9 @@ export default defineMessages({
   "not-found": {
     id: "generic.not-found",
     defaultMessage: "Not found"
+  },
+  "browse-through": {
+    id: "generic.browse-through",
+    defaultMessage: "Browse through"
   }
 });
