@@ -17,26 +17,7 @@ export default () => ({
     { title: "Reviews", url: "/reviews" },
     { title: "Spy", url: "/spy" },
     { title: "Inventory", url: "/inventory" },
-    {
-      title: "Profit",
-      url: "/profit",
-      children: [
-        { title: "Overview" },
-        {
-          title: "Costs",
-          url: "/costs",
-          children: [
-            { title: "Expenses", url: "/expenses" },
-            { title: "FBM", url: "/fbm" }
-          ]
-        },
-        { title: "Profit & Loss", url: "/loss" },
-        { title: "Breakdown", url: "/breakdown" },
-        { title: "Returns", url: "/returns" },
-        { title: "Promos", url: "/promos" },
-        { title: "Global Overview", url: "/global" }
-      ]
-    },
+    { title: "Profit", url: "/profit" },
     { title: "PPC Manager", url: "/ppc-manager" }
   ])
 });

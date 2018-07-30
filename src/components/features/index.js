@@ -1,40 +1,4 @@
-// import loadable from "react-loadable";
-
-// import Loading from "components/loading";
-
-/*
-export const load = promise =>
-  loadable({
-    loading: Loading,
-    loader: promise,
-    render: ({ default: component }, { connectDB, ...props }) =>
-      connectDB(component).with(props)
-  });
-*/
-
-// export const Overview = load(() =>
-// import("components/pages/overview" /* webpackChunkName: "overview" */)
-// );
-
-// export const Costs = load(() =>
-// import("components/pages/costs" /* webpackChunkName: "costs" */)
-// );
-
-// export const NotFound = load(() =>
-// import("components/pages/404" /* webpackChunkName: "404" */)
-// );
-
-// export const async = promise => (...params) => promise(...params);
-
-import loadable from "react-loadable";
-
-import Loading from "components/loading";
-
-export const load = loader =>
-  loadable({
-    loading: Loading,
-    loader
-  });
+import load from "helpers/rendering/load";
 
 export const Cockpit = load(() =>
   import("components/features/cockpit" /* webpackChunkName: "cockpit" */)

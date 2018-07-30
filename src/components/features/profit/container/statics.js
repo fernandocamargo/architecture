@@ -1,4 +1,4 @@
-export const displayName = "Loader";
+export const displayName = "Features/Profit/Overview";
 
 export const propTypes = {};
 

@@ -1,4 +1,4 @@
-import { node, string } from "prop-types";
+import { string } from "prop-types";
 
 import {
   propTypes as MenuPropTypes,
@@ -8,7 +8,6 @@ import {
 export const displayName = "App";
 
 export const propTypes = {
-  children: node.isRequired,
   className: string.isRequired,
   menu: MenuPropTypes.children
 };
