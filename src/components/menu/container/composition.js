@@ -7,7 +7,7 @@ import * as statics from "./statics";
 import withStyle from "./style";
 
 export default compose(
-  setStatics(statics),
   injectIntl,
-  withStyle
+  withStyle,
+  setStatics(statics)
 );
