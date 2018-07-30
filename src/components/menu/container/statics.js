@@ -1,7 +1,10 @@
 import { node, string } from "prop-types";
 import { intlShape } from "react-intl";
 
-import * as MenuItems from "components/menu/items/statics";
+import {
+  propTypes as MenuItemsPropTypes,
+  defaultProps as MenuItemsDefaultProps
+} from "components/menu/items/statics";
 
 export const displayName = "Menu";
 
@@ -9,9 +12,9 @@ export const propTypes = {
   intl: intlShape.isRequired,
   title: node,
   className: string.isRequired,
-  ...MenuItems.propTypes
+  children: MenuItemsPropTypes.children
 };
 
 export const defaultProps = {
-  ...MenuItems.defaultProps
+  children: MenuItemsDefaultProps.children
 };

@@ -1,5 +1,18 @@
-export const displayName = 'App';
+import { node, string } from "prop-types";
 
-export const propTypes = {};
+import {
+  propTypes as MenuPropTypes,
+  defaultProps as MenuDefaultProps
+} from "components/menu/container/statics";
 
-export const defaultProps = {};
+export const displayName = "App";
+
+export const propTypes = {
+  children: node.isRequired,
+  className: string.isRequired,
+  menu: MenuPropTypes.children
+};
+
+export const defaultProps = {
+  menu: MenuDefaultProps.children
+};
