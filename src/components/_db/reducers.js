@@ -1,14 +1,14 @@
-import update from "immutability-helper";
+import update from 'immutability-helper';
 
-export const request = state => params =>
+export const register = state => params =>
   update(state, {
     network: {
       [params.fingerprint]: (fingerprint = {}) =>
         update(fingerprint, {
           [params.timestamp]: (timestamp = {}) =>
             update(timestamp, {
-              $merge: params.details
-            })
-        })
-    }
+              $merge: params.details,
+            }),
+        }),
+    },
   });

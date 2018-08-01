@@ -1,13 +1,11 @@
 import update from "immutability-helper";
 
+import ensure from "helpers/array/ensure";
 import { RUN } from "actions";
 
 import initialState from "./initial-state";
 
-export const ensure = collection =>
-  Array.isArray(collection) ? collection : [collection];
-
-export const apply = (state, mutation) => update(state, mutation);
+export const apply = (state, mutation) => update(state, mutation(state));
 
 export default (state = initialState(), { type, mutation }) => {
   switch (true) {

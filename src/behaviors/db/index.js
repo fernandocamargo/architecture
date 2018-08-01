@@ -1,3 +1,6 @@
-import { createElement } from "react";
+import React from "react";
+import { compose } from "recompose";
 
-export default component => props => createElement(component, props);
+import DB from "components/db";
+
+export default compose(component => props => <DB {...props}>{component}</DB>);

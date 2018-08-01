@@ -1,17 +1,11 @@
-import { compose, lifecycle } from "recompose";
+import { compose } from "recompose";
 
 import setStatics from "helpers/rendering/statics/set";
+import withDB from "behaviors/db";
 
 import * as statics from "./statics";
 
 export default compose(
-  lifecycle({
-    componentDidMount() {
-      console.log(statics.displayName, "componentDidMount();");
-    },
-    componentWillUnmount() {
-      console.log(statics.displayName, "componentWillUnmount();");
-    }
-  }),
+  withDB,
   setStatics(statics)
 );

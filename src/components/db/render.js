@@ -1,3 +1,3 @@
 import { createElement } from "react";
 
-export default ({ component, ...props }) => createElement(component, props);
+export default ({ children, ...props }) => createElement(children, props);

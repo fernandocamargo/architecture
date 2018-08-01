@@ -1,19 +1,20 @@
-import { createStore } from 'redux';
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore } from "redux";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { composeWithDevTools } from "redux-devtools-extension";
 
-import reducers from 'reducers';
+import reducers from "reducers";
 
 export const store = createStore(
   persistReducer(
     {
       key: window.location.host,
-      storage,
+      whitelist: ["persisted"],
+      storage
     },
-    reducers,
+    reducers
   ),
-  composeWithDevTools(),
+  composeWithDevTools()
 );
 
 export const persistor = persistStore(store);

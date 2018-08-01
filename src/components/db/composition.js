@@ -1,125 +1,125 @@
+import noop from "lodash/noop";
+import composition from "lodash/fp/compose";
+import omit from "lodash/fp/omit";
 import md5 from "md5";
-import { isValidElement, createElement, cloneElement } from "react";
-import { compose, withStateHandlers, withProps, lifecycle } from "recompose";
+import {
+  compose,
+  getDisplayName,
+  withStateHandlers,
+  withProps,
+  lifecycle,
+  mapProps
+} from "recompose";
+import { connect } from "react-redux";
 
 import { RUN } from "actions";
+import ensure from "helpers/array/ensure";
+import replace from "helpers/object/replace";
 import setStatics from "helpers/rendering/statics/set";
+import { register, deregister } from "mutations";
 
 import * as statics from "./statics";
 import initialState from "./initial-state";
 import * as reducers from "./reducers";
+import selectors from "./selectors";
 
-export const noop = () => {};
+export const reserved = [
+  "dispatch",
+  "register",
+  "deregister",
+  "network",
+  "request"
+];
+
+export const omitProps = composition(mapProps, omit);
+
+export const call = (...params) => callback => callback(...params);
 
 export const getType = method => `${RUN}: ${method}`;
 
 export const printArgs = params => params.map(JSON.stringify).join(", ");
 
-export const ensureArray = object =>
-  Array.isArray(object) ? object : [object];
-
-export const replace = (object, path = []) => ({
-  with: replacement =>
-    Object.entries(object).reduce((stack, [key, value]) => {
-      const deep = !!Object.keys(value).length;
-      const location = path.concat(key);
-
-      return Object.assign(stack, {
-        [key]: deep
-          ? replace(value, location).with(replacement)
-          : replacement(location, value)
-      });
-    }, {})
-});
-
-export const listen = listenable => settings => {
-  const listeners = ensureArray(settings);
-  const getListenersFrom = props =>
-    listeners.reduce((stack, { prop, method = {}, params, format }) => {
-      const { fingerprint } = method;
-      const channel = listenable[fingerprint] || {};
-      const events = Object.entries(channel).reduce(
-        (stack, [timestamp, details]) => {
-          const match = !!~details.params
-            .toString()
-            .indexOf(params(props).toString());
-
-          return !match ? stack : stack.concat({ ...details, timestamp });
-        },
-        []
-      );
-      const broadcast = format ? format(events) : events;
-
-      return Object.assign(stack, { [prop]: broadcast });
-    }, {});
+export const getDefaultDBMethodsFrom = ({ children }) => {
+  const namespace = getDisplayName(children);
 
   return {
-    in: component =>
-      isValidElement(component)
-        ? cloneElement(component, getListenersFrom())
-        : props =>
-            createElement(component, { ...props, ...getListenersFrom(props) })
+    register: () => Promise.resolve({ mutation: register(namespace) }),
+    deregister: () => Promise.resolve({ mutation: deregister(namespace) })
   };
 };
 
-export default compose(
-  setStatics(statics),
-  withStateHandlers(initialState, reducers),
-  withProps(({ component, ...props }) => {
-    const { network, dispatch, register } = props;
-    const { displayName, DB = Object.create } = component;
-    const methods = replace(DB(props)).with((path, method) => {
-      const namespace = [displayName, ...path].join(".");
-      const fingerprint = md5(method);
+export const bindTo = props => (path, method) => {
+  const { children, request, dispatch } = props;
+  const namespace = [getDisplayName(children), ...path].join(".");
+  const fingerprint = md5(method);
 
-      return Object.assign(
-        (...params) => {
-          const timestamp = new Date().getTime();
+  return Object.assign(
+    (...params) => {
+      const timestamp = new Date().getTime();
 
-          register({
+      request({
+        fingerprint,
+        timestamp,
+        details: { loading: true, params, path }
+      });
+
+      return method(...params)
+        .then(({ mutation, output }) => {
+          request({
             fingerprint,
             timestamp,
-            details: { loading: true, params, path }
+            details: { loading: false, output }
           });
 
-          return method(...params)
-            .then(({ mutation, output }) => {
-              register({
-                fingerprint,
-                timestamp,
-                details: { loading: false, output }
-              });
+          dispatch({
+            type: getType(`${namespace}(${printArgs(params)});`),
+            mutation: ensure(mutation).map(call(props))
+          });
+        })
+        .catch(({ error }) =>
+          request({
+            fingerprint,
+            timestamp,
+            details: { loading: false, error }
+          })
+        );
+    },
+    { fingerprint }
+  );
+};
 
-              dispatch({
-                type: getType(`${namespace}(${printArgs(params)});`),
-                method: namespace,
-                params,
-                mutation
-              });
-            })
-            .catch(({ error }) =>
-              register({
-                fingerprint,
-                timestamp,
-                details: { loading: false, error }
-              })
-            );
-        },
-        {
-          fingerprint
-        }
-      );
-    });
+export const connectToDB = props => {
+  const {
+    children: { DB: getCustomDBMethodsFrom = Object.create }
+  } = props;
 
-    return { ...methods, listen: listen(network) };
-  }),
+  return replace({
+    ...getCustomDBMethodsFrom(props),
+    ...getDefaultDBMethodsFrom(props)
+  }).with(bindTo(props));
+};
+
+export default compose(
+  connect(selectors),
+  withStateHandlers(initialState, reducers),
+  withProps(connectToDB),
   lifecycle({
     componentDidMount() {
       const {
-        props: { load = noop }
+        props: { load = noop, register = noop }
       } = this;
 
+      register();
       load();
+    },
+    componentWillUnmount() {
+      const {
+        props: { deregister = noop }
+      } = this;
+
+      deregister();
     }
-  })
+  }),
+  omitProps(reserved),
+  setStatics(statics)
 );
