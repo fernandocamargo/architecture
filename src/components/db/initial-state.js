@@ -1,3 +1,4 @@
 export default () => ({
-  network: {}
+  network: new Map(),
+  history: {}
 });

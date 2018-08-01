@@ -1,8 +1,22 @@
 import update from "immutability-helper";
 
-export const request = state => params =>
+export const connect = state => promise =>
   update(state, {
     network: {
+      $add: [[promise]]
+    }
+  });
+
+export const disconnect = state => promise =>
+  update(state, {
+    network: {
+      $remove: [promise]
+    }
+  });
+
+export const log = state => params =>
+  update(state, {
+    history: {
       [params.fingerprint]: (fingerprint = {}) =>
         update(fingerprint, {
           [params.timestamp]: (timestamp = {}) =>

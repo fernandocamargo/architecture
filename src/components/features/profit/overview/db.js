@@ -16,5 +16,10 @@ export default props => ({
           mutation: setSomething("foo.bar.zop")
         })
     }
-  }
+  },
+  fail: () => Promise.reject(new Error("Failed")),
+  delayed: () =>
+    new Promise((_, reject) =>
+      window.setTimeout(() => reject(new Error("Delayed!")), 2500)
+    )
 });

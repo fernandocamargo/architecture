@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://fernandocamargo.github.io/architecture/",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "classnames": "^2.2.6",
     "emotion": "^9.2.6",
     "faker": "^4.1.0",

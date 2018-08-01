@@ -13,6 +13,7 @@ import {
 import { connect } from "react-redux";
 
 import { RUN } from "actions";
+import Promise from "helpers/promise";
 import ensure from "helpers/array/ensure";
 import replace from "helpers/object/replace";
 import setStatics from "helpers/rendering/statics/set";
@@ -27,9 +28,14 @@ export const reserved = [
   "dispatch",
   "register",
   "deregister",
-  "network",
-  "request"
+  "history",
+  "log"
 ];
+
+export const clear = (_, promise) => promise.cancel();
+
+export const wrap = promise =>
+  new Promise((resolve, reject) => promise.then(resolve).catch(reject));
 
 export const omitProps = composition(mapProps, omit);
 
@@ -43,46 +49,73 @@ export const getDefaultDBMethodsFrom = ({ children }) => {
   const namespace = getDisplayName(children);
 
   return {
-    register: () => Promise.resolve({ mutation: register(namespace) }),
-    deregister: () => Promise.resolve({ mutation: deregister(namespace) })
+    register: () => register(namespace),
+    deregister: () => deregister(namespace)
   };
 };
 
+export const isThenable = object =>
+  object instanceof window.Promise || object instanceof Promise;
+
 export const bindTo = props => (path, method) => {
-  const { children, request, dispatch } = props;
+  const { children, connect, disconnect, log, dispatch } = props;
   const namespace = [getDisplayName(children), ...path].join(".");
   const fingerprint = md5(method);
 
   return Object.assign(
     (...params) => {
       const timestamp = new Date().getTime();
+      const output = method(...params);
 
-      request({
-        fingerprint,
-        timestamp,
-        details: { loading: true, params, path }
-      });
+      switch (true) {
+        case isThenable(output):
+          const promise = wrap(output);
 
-      return method(...params)
-        .then(({ mutation, output }) => {
-          request({
+          connect(promise);
+
+          log({
             fingerprint,
             timestamp,
-            details: { loading: false, output }
+            details: { loading: true, params, path }
           });
 
+          return promise
+            .then(({ mutation = [], output }) => {
+              disconnect(promise);
+
+              log({
+                fingerprint,
+                timestamp,
+                details: { loading: false, output }
+              });
+
+              dispatch({
+                type: getType(`${namespace}(${printArgs(params)});`),
+                mutation: ensure(mutation).map(call(props))
+              });
+            })
+            .catch(({ mutation = [], error }) => {
+              disconnect(promise);
+
+              log({
+                fingerprint,
+                timestamp,
+                details: { loading: false, error }
+              });
+
+              dispatch({
+                type: getType(`${namespace}(${printArgs(params)});`),
+                mutation: ensure(mutation).map(call(props))
+              });
+            });
+        default:
           dispatch({
             type: getType(`${namespace}(${printArgs(params)});`),
-            mutation: ensure(mutation).map(call(props))
+            mutation: ensure(output).map(call(props))
           });
-        })
-        .catch(({ error }) =>
-          request({
-            fingerprint,
-            timestamp,
-            details: { loading: false, error }
-          })
-        );
+
+          return output;
+      }
     },
     { fingerprint }
   );
@@ -99,27 +132,31 @@ export const connectToDB = props => {
   }).with(bindTo(props));
 };
 
+export const hook = () => ({
+  componentDidMount() {
+    const {
+      props: { load = noop, register = noop }
+    } = this;
+
+    register();
+    load();
+  },
+  componentWillUnmount() {
+    const {
+      props: { deregister = noop, network }
+    } = this;
+
+    network.forEach(clear);
+
+    deregister();
+  }
+});
+
 export default compose(
   connect(selectors),
   withStateHandlers(initialState, reducers),
   withProps(connectToDB),
-  lifecycle({
-    componentDidMount() {
-      const {
-        props: { load = noop, register = noop }
-      } = this;
-
-      register();
-      load();
-    },
-    componentWillUnmount() {
-      const {
-        props: { deregister = noop }
-      } = this;
-
-      deregister();
-    }
-  }),
+  lifecycle(hook()),
   omitProps(reserved),
   setStatics(statics)
 );

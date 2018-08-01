@@ -4,7 +4,9 @@ export default ({
   foo: {
     bar: { zop }
   },
-  test
+  test,
+  fail,
+  delayed
 }) => (
   <div>
     <h2>Overview</h2>
@@ -15,5 +17,8 @@ export default ({
       Click me!
     </button>
     <button onClick={() => zop()}>Click me (nested)!</button>
+    <button onClick={() => fail()}>Failing...</button>
+    <button onClick={() => delayed()}>Delayed...</button>
   </div>
 );
+
