@@ -29,7 +29,10 @@ export const reserved = [
   "register",
   "deregister",
   "history",
-  "log"
+  "log",
+  "network",
+  "connect",
+  "disconnect"
 ];
 
 export const clear = (_, promise) => promise.cancel();
@@ -61,64 +64,52 @@ export const bindTo = props => (path, method) => {
   const { children, connect, disconnect, log, dispatch } = props;
   const namespace = [getDisplayName(children), ...path].join(".");
   const fingerprint = md5(method);
+  const wrapped = (...params) => {
+    const output = method(...params);
+    const type = getType(`${namespace}(${printArgs(params)});`);
+    const timestamp = new Date().getTime();
+    const receive = promise => ({ mutation = [], output, error }) => {
+      disconnect(promise);
 
-  return Object.assign(
-    (...params) => {
-      const timestamp = new Date().getTime();
-      const output = method(...params);
+      log({
+        fingerprint,
+        timestamp,
+        details: {
+          loading: false,
+          ...(output && { output }),
+          ...(error && { error })
+        }
+      });
 
-      switch (true) {
-        case isThenable(output):
-          const promise = wrap(output);
+      dispatch({
+        mutation: ensure(mutation).map(call(props)),
+        type
+      });
+    };
+    const async = () => {
+      const promise = wrap(output);
 
-          connect(promise);
+      connect(promise);
 
-          log({
-            fingerprint,
-            timestamp,
-            details: { loading: true, params, path }
-          });
+      log({
+        fingerprint,
+        timestamp,
+        details: { loading: true, params, path }
+      });
 
-          return promise
-            .then(({ mutation = [], output }) => {
-              disconnect(promise);
+      return promise.then(receive(promise)).catch(receive(promise));
+    };
+    const sync = () => {
+      dispatch({
+        mutation: ensure(output).map(call(props)),
+        type
+      });
+    };
 
-              log({
-                fingerprint,
-                timestamp,
-                details: { loading: false, output }
-              });
+    return (isThenable(output) ? async : sync)();
+  };
 
-              dispatch({
-                type: getType(`${namespace}(${printArgs(params)});`),
-                mutation: ensure(mutation).map(call(props))
-              });
-            })
-            .catch(({ mutation = [], error }) => {
-              disconnect(promise);
-
-              log({
-                fingerprint,
-                timestamp,
-                details: { loading: false, error }
-              });
-
-              dispatch({
-                type: getType(`${namespace}(${printArgs(params)});`),
-                mutation: ensure(mutation).map(call(props))
-              });
-            });
-        default:
-          dispatch({
-            type: getType(`${namespace}(${printArgs(params)});`),
-            mutation: ensure(output).map(call(props))
-          });
-
-          return output;
-      }
-    },
-    { fingerprint }
-  );
+  return Object.assign(wrapped, { fingerprint });
 };
 
 export const connectToDB = props => {
@@ -132,7 +123,7 @@ export const connectToDB = props => {
   }).with(bindTo(props));
 };
 
-export const hook = () => ({
+export const hookEvents = () => ({
   componentDidMount() {
     const {
       props: { load = noop, register = noop }
@@ -156,7 +147,7 @@ export default compose(
   connect(selectors),
   withStateHandlers(initialState, reducers),
   withProps(connectToDB),
-  lifecycle(hook()),
+  lifecycle(hookEvents()),
   omitProps(reserved),
   setStatics(statics)
 );
