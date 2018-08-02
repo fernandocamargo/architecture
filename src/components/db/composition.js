@@ -1,4 +1,5 @@
 import noop from "lodash/noop";
+import constant from "lodash/constant";
 import composition from "lodash/fp/compose";
 import omit from "lodash/fp/omit";
 import md5 from "md5";
@@ -10,6 +11,7 @@ import {
   lifecycle,
   mapProps
 } from "recompose";
+import { isValidElement, cloneElement, createElement } from "react";
 import { connect } from "react-redux";
 
 import { RUN } from "actions";
@@ -48,15 +50,6 @@ export const getType = method => `${RUN}: ${method}`;
 
 export const printArgs = params => params.map(JSON.stringify).join(", ");
 
-export const getDefaultDBMethodsFrom = ({ children }) => {
-  const namespace = getDisplayName(children);
-
-  return {
-    register: () => register(namespace),
-    deregister: () => deregister(namespace)
-  };
-};
-
 export const isThenable = object =>
   object instanceof window.Promise || object instanceof Promise;
 
@@ -67,7 +60,8 @@ export const bindTo = props => (path, method) => {
   const wrapped = (...params) => {
     const output = method(...params);
     const type = getType(`${namespace}(${printArgs(params)});`);
-    const timestamp = new Date().getTime();
+    const start = new Date();
+    const timestamp = start.getTime();
     const receive = promise => ({ mutation = [], output, error }) => {
       disconnect(promise);
 
@@ -76,6 +70,7 @@ export const bindTo = props => (path, method) => {
         timestamp,
         details: {
           loading: false,
+          finish: new Date(),
           ...(output && { output }),
           ...(error && { error })
         }
@@ -94,7 +89,7 @@ export const bindTo = props => (path, method) => {
       log({
         fingerprint,
         timestamp,
-        details: { loading: true, params, path }
+        details: { loading: true, params, path, start }
       });
 
       return promise.then(receive(promise)).catch(receive(promise));
@@ -112,15 +107,51 @@ export const bindTo = props => (path, method) => {
   return Object.assign(wrapped, { fingerprint });
 };
 
-export const connectToDB = props => {
-  const {
-    children: { DB: getCustomDBMethodsFrom = Object.create }
-  } = props;
+export const listenTo = listenable => settings => {
+  const listeners = ensure(settings);
+  const extract = props => (
+    stack,
+    { prop, method = {}, params = constant(""), format }
+  ) => {
+    const { fingerprint } = method;
+    const channel = listenable[fingerprint] || {};
+    const find = (stack, [timestamp, details]) => {
+      const match = !!~details.params
+        .toString()
+        .indexOf(params(props).toString());
 
-  return replace({
-    ...getCustomDBMethodsFrom(props),
-    ...getDefaultDBMethodsFrom(props)
-  }).with(bindTo(props));
+      return !match ? stack : stack.concat({ ...details, timestamp });
+    };
+    const events = Object.entries(channel).reduce(find, []);
+    const broadcast = format ? format(events) : events;
+    const value = broadcast || {};
+
+    return Object.assign(stack, { [prop]: value });
+  };
+  const getListenersFrom = props => listeners.reduce(extract(props), {});
+
+  return {
+    in: component =>
+      isValidElement(component)
+        ? cloneElement(component, getListenersFrom())
+        : props =>
+            createElement(component, { ...props, ...getListenersFrom(props) })
+  };
+};
+
+export const connectToDB = props => {
+  const { children, history } = props;
+  const { DB = Object.create } = children;
+  const namespace = getDisplayName(children);
+
+  return {
+    ...replace({
+      ...DB(props),
+      register: () => register(namespace),
+      deregister: () => deregister(namespace)
+    }).with(bindTo(props)),
+    listen: listenTo(history)
+  };
 };
 
 export const hookEvents = () => ({
