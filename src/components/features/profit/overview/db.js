@@ -19,13 +19,13 @@ export default props => ({
   a: {
     b: {
       c: {
-        d: () => ({ mutation: setSomething("a.b.c.d") }),
-        e: () => ({ mutation: setSomething("a.b.c.e") }),
-        f: () => ({ mutation: setSomething("a.b.c.f") })
+        d: something => ({ mutation: setSomething(["a.b.c.d", something]) }),
+        e: something => ({ mutation: setSomething(["a.b.c.e", something]) }),
+        f: something => ({ mutation: setSomething(["a.b.c.f", something]) })
       },
-      g: () => ({ mutation: setSomething("a.b.g") }),
-      h: () => ({ mutation: setSomething("a.b.h") }),
-      i: () => ({ mutation: setSomething("a.b.i") })
+      g: something => ({ mutation: setSomething(["a.b.g", something]) }),
+      h: something => ({ mutation: setSomething(["a.b.h", something]) }),
+      i: something => ({ mutation: setSomething(["a.b.i", something]) })
     }
   }
 });

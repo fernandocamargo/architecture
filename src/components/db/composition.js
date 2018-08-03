@@ -2,7 +2,8 @@ import noop from "lodash/noop";
 import constant from "lodash/constant";
 import composition from "lodash/fp/compose";
 import omit from "lodash/fp/omit";
-import md5 from "md5";
+// import md5 from "md5";
+import { isValidElement, cloneElement, createElement, Children } from "react";
 import {
   compose,
   getDisplayName,
@@ -11,7 +12,6 @@ import {
   lifecycle,
   mapProps
 } from "recompose";
-import { isValidElement, cloneElement, createElement } from "react";
 import { connect } from "react-redux";
 
 import { RUN } from "actions";
@@ -37,7 +37,7 @@ export const reserved = [
   "disconnect"
 ];
 
-export const clear = (_, promise) => promise.cancel();
+export const shutdown = (_, promise) => promise.cancel();
 
 export const wrap = promise =>
   new Promise((resolve, reject) => promise.then(resolve).catch(reject));
@@ -56,24 +56,22 @@ export const isThenable = object =>
 export const bindTo = props => (path, method) => {
   const { children, connect, disconnect, log, dispatch } = props;
   const namespace = [getDisplayName(children), ...path].join(".");
-  const fingerprint = md5(method);
+  // const fingerprint = md5(method);
   const wrapped = (...params) => {
-    const output = method(...params);
+    const response = method(...params);
     const type = getType(`${namespace}(${printArgs(params)});`);
     const start = new Date();
     const timestamp = start.getTime();
-    const receive = promise => ({ mutation = [], output, error }) => {
-      disconnect(promise);
-
+    const success = ({ mutation = [], output, error }) => {
       log({
-        fingerprint,
-        timestamp,
+        fingerprint: namespace,
         details: {
           loading: false,
           finish: new Date(),
           ...(output && { output }),
           ...(error && { error })
-        }
+        },
+        timestamp
       });
 
       dispatch({
@@ -81,30 +79,29 @@ export const bindTo = props => (path, method) => {
         type
       });
     };
+    const receive = promise => (...lol) => {
+      disconnect(promise);
+
+      return success(...lol);
+    };
     const async = () => {
-      const promise = wrap(output);
+      const promise = wrap(response);
 
       connect(promise);
 
-      log({
-        fingerprint,
-        timestamp,
-        details: { loading: true, params, path, start }
-      });
-
       return promise.then(receive(promise)).catch(receive(promise));
     };
-    const sync = () => {
-      dispatch({
-        mutation: ensure(output).map(call(props)),
-        type
-      });
-    };
 
-    return (isThenable(output) ? async : sync)();
+    log({
+      details: { loading: true, params, path, start },
+      fingerprint: namespace,
+      timestamp
+    });
+
+    return !isThenable(response) ? success(response) : async();
   };
 
-  return Object.assign(wrapped, { fingerprint });
+  return Object.assign(wrapped, { fingerprint: namespace });
 };
 
 export const listenTo = listenable => settings => {
@@ -143,14 +140,24 @@ export const connectToDB = props => {
   const { children, history } = props;
   const { DB = Object.create } = children;
   const namespace = getDisplayName(children);
+  const listen = listenTo(history);
+  const Listen = ({ children, to, as, format }) =>
+    Children.map(children, child =>
+      listen({
+        prop: as,
+        method: to,
+        format
+      }).in(child)
+    );
 
   return {
     ...replace({
       ...DB(props),
-      register: () => register(namespace),
-      deregister: () => deregister(namespace)
+      register: () => ({ mutation: register(namespace) }),
+      deregister: () => ({ mutation: deregister(namespace) })
     }).with(bindTo(props)),
-    listen: listenTo(history)
+    Listen,
+    listen
   };
 };
 
@@ -168,7 +175,7 @@ export const hookEvents = () => ({
       props: { deregister = noop, network }
     } = this;
 
-    network.forEach(clear);
+    network.forEach(shutdown);
 
     deregister();
   }

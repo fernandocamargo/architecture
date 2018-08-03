@@ -12,8 +12,15 @@ export const getStatus = ({ output, error }) => {
   }
 };
 
-export const LoggerItem = ({ path, start, finish, ...props }, key) => (
-  <dl key={key} style={{ backgroundColor: key % 2 === 0 ? "#fff" : "#c9c9c9" }}>
+export const LoggerItem = ({ path, start, finish, ...props }) => (
+  <dl
+    style={{
+      backgroundColor: "#fff",
+      border: "dotted 1px #000",
+      margin: "1rem",
+      padding: "1rem"
+    }}
+  >
     <dt>
       <h2>Method: {path.join(".")}();</h2>
     </dt>
@@ -29,11 +36,11 @@ export const LoggerItem = ({ path, start, finish, ...props }, key) => (
   </dl>
 );
 
-export const Logger = ({ log }) =>
+export const Logger = ({ title, log }) =>
   !!log.length && (
     <div style={{ border: "dotted 1px #000" }}>
-      <h1>Logger:</h1>
-      {log.map(LoggerItem)}
+      <h1>{title}</h1>
+      {log.map((item, key) => <LoggerItem key={key} {...item} />)}
     </div>
   );
 
@@ -61,20 +68,60 @@ export const Button = ({
   </Fragment>
 );
 
-export default ({ test, listen }) => (
-  <div>
+export const Props = props => <pre>{JSON.stringify(props, null, 2)}</pre>;
+
+export default ({
+  test,
+  Listen,
+  a: {
+    b: {
+      c: { d, e, f },
+      g,
+      h,
+      i
+    }
+  }
+}) => (
+  <Fragment>
     <h2>Overview</h2>
     <p>Bar chart</p>
     <p>Line chart</p>
     <p>Table</p>
-    {listen({
-      prop: "lol",
-      method: test,
-      format: last
-    }).in(<Button onClick={() => test()}>Testing</Button>)}
-    {listen({
-      prop: "log",
-      method: test
-    }).in(<Logger />)}
-  </div>
+    <Listen to={test} as="lol" format={last}>
+      <Props />
+      <Button onClick={() => test()}>Testing</Button>
+    </Listen>
+    <Listen to={test} as="log">
+      <Logger title="Listening to test();" />
+    </Listen>
+    <Listen to={"a"} as="log">
+      <Logger title="Listening to namespace" />
+    </Listen>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <button onClick={() => d()}>D</button>
+          </td>
+          <td>
+            <button onClick={() => e()}>E</button>
+          </td>
+          <td>
+            <button onClick={() => f()}>F</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button onClick={() => g()}>G</button>
+          </td>
+          <td>
+            <button onClick={() => h()}>H</button>
+          </td>
+          <td>
+            <button onClick={() => i()}>I</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </Fragment>
 );
