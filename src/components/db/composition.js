@@ -1,16 +1,13 @@
 import noop from "lodash/noop";
 import constant from "lodash/constant";
-import composition from "lodash/fp/compose";
-import omit from "lodash/fp/omit";
-// import md5 from "md5";
+import md5 from "md5";
 import { isValidElement, cloneElement, createElement, Children } from "react";
 import {
   compose,
   getDisplayName,
   withStateHandlers,
   withProps,
-  lifecycle,
-  mapProps
+  lifecycle
 } from "recompose";
 import { connect } from "react-redux";
 
@@ -19,6 +16,7 @@ import Promise from "helpers/promise";
 import ensure from "helpers/array/ensure";
 import replace from "helpers/object/replace";
 import setStatics from "helpers/rendering/statics/set";
+import omitProps from "behaviors/omit-props";
 import { register, deregister } from "mutations";
 
 import * as statics from "./statics";
@@ -32,19 +30,20 @@ export const reserved = [
   "deregister",
   "history",
   "log",
+  "dismiss",
   "network",
   "connect",
   "disconnect"
 ];
 
-export const shutdown = (_, promise) => promise.cancel();
+export const cancel = promise => promise.cancel();
+
+export const shutdown = (_, promise) => cancel(promise);
 
 export const wrap = promise =>
   new Promise((resolve, reject) => promise.then(resolve).catch(reject));
 
-export const omitProps = composition(mapProps, omit);
-
-export const call = (...params) => callback => callback(...params);
+export const execute = (...params) => callback => callback(...params);
 
 export const getType = method => `${RUN}: ${method}`;
 
@@ -54,9 +53,10 @@ export const isThenable = object =>
   object instanceof window.Promise || object instanceof Promise;
 
 export const bindTo = props => (path, method) => {
-  const { children, connect, disconnect, log, dispatch } = props;
-  const namespace = [getDisplayName(children), ...path].join(".");
-  // const fingerprint = md5(method);
+  const { children, connect, disconnect, log, dismiss, dispatch } = props;
+  const namespace = [getDisplayName(children) || md5(method), ...path].join(
+    "."
+  );
   const wrapped = (...params) => {
     const response = method(...params);
     const type = getType(`${namespace}(${printArgs(params)});`);
@@ -66,23 +66,24 @@ export const bindTo = props => (path, method) => {
       log({
         fingerprint: namespace,
         details: {
-          loading: false,
+          dismiss: dismiss.bind(this, { fingerprint: namespace, timestamp }),
           finish: new Date(),
-          ...(output && { output }),
-          ...(error && { error })
+          loading: false,
+          ...(!!output && { output }),
+          ...(!!error && { error })
         },
         timestamp
       });
 
       dispatch({
-        mutation: ensure(mutation).map(call(props)),
+        mutation: ensure(mutation).map(execute(props)),
         type
       });
     };
-    const receive = promise => (...lol) => {
+    const receive = promise => (...resolved) => {
       disconnect(promise);
 
-      return success(...lol);
+      return success(...resolved);
     };
     const async = () => {
       const promise = wrap(response);
@@ -93,7 +94,12 @@ export const bindTo = props => (path, method) => {
     };
 
     log({
-      details: { loading: true, params, path, start },
+      details: {
+        loading: true,
+        params,
+        path,
+        start
+      },
       fingerprint: namespace,
       timestamp
     });

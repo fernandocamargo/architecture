@@ -26,3 +26,13 @@ export const log = state => params =>
         })
     }
   });
+
+export const dismiss = state => params =>
+  update(state, {
+    history: {
+      [params.fingerprint]: (fingerprint = {}) =>
+        update(fingerprint, {
+          $unset: [params.timestamp]
+        })
+    }
+  });

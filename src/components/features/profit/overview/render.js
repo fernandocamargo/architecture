@@ -1,5 +1,9 @@
 import last from "lodash/last";
+import random from "lodash/random";
 import React, { Fragment } from "react";
+
+export const prevent = callback => event =>
+  event.preventDefault() || callback(event);
 
 export const getStatus = ({ output, error }) => {
   switch (true) {
@@ -12,7 +16,7 @@ export const getStatus = ({ output, error }) => {
   }
 };
 
-export const LoggerItem = ({ path, start, finish, ...props }) => (
+export const LoggerItem = ({ path, start, finish, dismiss, ...props }) => (
   <dl
     style={{
       backgroundColor: "#fff",
@@ -27,12 +31,19 @@ export const LoggerItem = ({ path, start, finish, ...props }) => (
     <dd>
       <small>Start: {start.toUTCString()}</small>
     </dd>
-    {finish && (
+    {!!finish && (
       <dd>
         <small>Finish: {finish.toUTCString()}</small>
       </dd>
     )}
     <dd>Status: {getStatus(props)}</dd>
+    {!!dismiss && (
+      <dd>
+        <a href="" title="Dismiss" onClick={prevent(dismiss)}>
+          Dismiss
+        </a>
+      </dd>
+    )}
   </dl>
 );
 
@@ -44,6 +55,9 @@ export const Logger = ({ title, log }) =>
     </div>
   );
 
+export const stringify = object =>
+  typeof object === "string" ? object : JSON.stringify(object, null, 2);
+
 export const Button = ({
   onClick,
   children,
@@ -53,18 +67,19 @@ export const Button = ({
     <button onClick={onClick} disabled={loading}>
       {children} {loading && "(loading...)"}
     </button>
-    {output &&
+    {!!output &&
       !loading && (
         <p style={{ color: "green" }}>
-          <strong>Success: {output}</strong>
+          <strong>Success: {stringify(output)}</strong>
         </p>
       )}
-    {error &&
+    {!!error &&
       !loading && (
         <p style={{ color: "red" }}>
-          <strong>Error: {error}</strong>
+          <strong>Error: {stringify(error)}</strong>
         </p>
       )}
+    {!!loading && <p>Loading...</p>}
   </Fragment>
 );
 
@@ -101,24 +116,24 @@ export default ({
       <tbody>
         <tr>
           <td>
-            <button onClick={() => d()}>D</button>
+            <button onClick={() => d(1)}>D</button>
           </td>
           <td>
-            <button onClick={() => e()}>E</button>
+            <button onClick={() => e(2)}>E</button>
           </td>
           <td>
-            <button onClick={() => f()}>F</button>
+            <button onClick={() => f(3)}>F</button>
           </td>
         </tr>
         <tr>
           <td>
-            <button onClick={() => g()}>G</button>
+            <button onClick={() => g(1)}>G</button>
           </td>
           <td>
-            <button onClick={() => h()}>H</button>
+            <button onClick={() => h(2)}>H</button>
           </td>
           <td>
-            <button onClick={() => i()}>I</button>
+            <button onClick={() => i(random(1, 10))}>I</button>
           </td>
         </tr>
       </tbody>

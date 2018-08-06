@@ -1,5 +1,4 @@
-import random from "lodash/random";
-
+import parse from "helpers/request/parse";
 import { setSomething } from "mutations";
 
 export default props => ({
@@ -8,12 +7,9 @@ export default props => ({
       window.setTimeout(() => resolve({ foo: "bar", array: [1, 2, 3] }), 500)
     ).then(response => ({ mutation: setSomething(response) })),
   test: () =>
-    new Promise((resolve, reject) =>
-      window.setTimeout(
-        () => (!!random(0, 1) ? resolve("LOL, it worked") : reject("Oh crap!")),
-        random(0.5, 5) * 1000
-      )
-    )
+    window
+      .fetch("/api")
+      .then(parse)
       .then(output => ({ mutation: setSomething(output), output }))
       .catch(error => ({ mutation: setSomething(error), error })),
   a: {
