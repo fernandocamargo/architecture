@@ -1,4 +1,9 @@
+import stringify from "helpers/object/stringify";
+
 export default set => ({
-  with: subset =>
-    String(set).substr(0, String(subset).length) === String(subset)
+  with: value => {
+    const subset = stringify(value);
+
+    return stringify(set).substr(0, subset.length) === subset;
+  }
 });

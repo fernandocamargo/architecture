@@ -16,7 +16,14 @@ export const getStatus = ({ loading, output, error }) => {
   }
 };
 
-export const LoggerItem = ({ path, start, finish, dismiss, ...props }) => (
+export const LoggerItem = ({
+  path,
+  params,
+  start,
+  finish,
+  dismiss,
+  ...props
+}) => (
   <dl
     style={{
       backgroundColor: "#fff",
@@ -27,6 +34,10 @@ export const LoggerItem = ({ path, start, finish, dismiss, ...props }) => (
   >
     <dt>
       <h2>Method: {path.join(".")}();</h2>
+    </dt>
+    <dt>
+      <h2>Params:</h2>
+      <pre>{JSON.stringify(params)}</pre>
     </dt>
     <dd>
       <small>Start: {start.toUTCString()}</small>
@@ -96,8 +107,14 @@ export default ({
     <p>Bar chart</p>
     <p>Line chart</p>
     <p>Table</p>
-    <Listen to={"a.b.c.d"} as="log">
-      <Logger title="Listening to a namespace" />
+    <Listen to={"a"} params={1} as="log">
+      <Logger title="Listening to a namespace 'a' with params [1]" />
+    </Listen>
+    <Listen to={"a"} params={[1, 2]} as="log">
+      <Logger title="Listening to a namespace 'a' with params [1, 2]" />
+    </Listen>
+    <Listen to={"a"} params={() => [1, 2, 3]} as="log">
+      <Logger title="Listening to a namespace 'a' with params [1, 2, 3]" />
     </Listen>
     <Listen to={test} as={status => status} format={last}>
       <Button onClick={() => test()}>Testing</Button>
@@ -115,7 +132,7 @@ export default ({
       <tbody>
         <tr>
           <td>
-            <button onClick={() => d(1)}>D</button>
+            <button onClick={() => d(1, 2, 3)}>D</button>
           </td>
           <td>
             <button onClick={() => e(2)}>E</button>
@@ -126,26 +143,10 @@ export default ({
         </tr>
         <tr>
           <td>
-            <button onClick={() => g(1)}>G</button>
+            <button onClick={() => g(1, 2)}>G</button>
           </td>
           <td>
-            <button
-              onClick={() =>
-                h(2, { foo: "bar" }, ["a", "b", "c"], {
-                  lol: [
-                    {
-                      first: {
-                        second: {
-                          third: [{ fourth: { fifth: "lol" } }]
-                        }
-                      }
-                    }
-                  ]
-                })
-              }
-            >
-              H
-            </button>
+            <button onClick={() => h(1, 2)}>H</button>
           </td>
           <td>
             <button onClick={() => i(random(1, 10))}>I</button>

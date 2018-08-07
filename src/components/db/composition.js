@@ -1,5 +1,6 @@
-import noop from "lodash/noop";
 import constant from "lodash/constant";
+import isString from "lodash/isString";
+import isFunction from "lodash/isFunction";
 import md5 from "md5";
 import { isValidElement, cloneElement, createElement, Children } from "react";
 import {
@@ -24,22 +25,7 @@ import * as statics from "./statics";
 import initialState from "./initial-state";
 import * as reducers from "./reducers";
 import selectors from "./selectors";
-
-export const reserved = [
-  "dispatch",
-  "register",
-  "deregister",
-  "history",
-  "log",
-  "dismiss",
-  "network",
-  "connect",
-  "disconnect"
-];
-
-export const cancel = promise => promise.cancel();
-
-export const shutdown = (_, promise) => cancel(promise);
+import events from "./events";
 
 export const dig = (stack, [_, activity]) =>
   stack.concat(Object.entries(activity));
@@ -114,28 +100,23 @@ export const bindTo = props => (path, method) => {
   return Object.assign(wrapped, { fingerprint: namespace });
 };
 
-export const search = subset => ({
-  in: set => !!~String(set).indexOf(String(subset))
-});
-
 export const listenTo = listenable => settings => {
   const listeners = ensure(settings);
   const extract = props => (
     stack,
-    { prop, method = {}, params = constant(""), format }
+    { prop, method = {}, params = constant([]), format }
   ) => {
     const { fingerprint } = method;
+    const $params = isFunction(params) ? params(props) : params;
+    const $$params = !Array.isArray($params) ? [$params] : $params;
+
     const find = (stack, [timestamp, details]) => {
-      const namespaced = typeof method === "string";
-      /*
-      const match = !![
-        namespaced && search(method).in(details.path),
-        search(params(props)).in(details.params)
-      ].filter(Boolean).length;
-      */
-      const match = namespaced
-        ? starts(details.path.join(".")).with(method)
-        : true;
+      const namespace = details.path.join(".");
+      const criteria = [
+        ...(isString(method) ? [!starts(namespace).with(method)] : []),
+        ...(!!$$params.length ? [!starts(details.params).with($$params)] : [])
+      ];
+      const match = !criteria.length || !criteria.filter(Boolean).length;
 
       return !match ? stack : stack.concat({ ...details, timestamp });
     };
@@ -143,14 +124,15 @@ export const listenTo = listenable => settings => {
     const getChannel = () =>
       !!fingerprint
         ? Object.entries(listenable[fingerprint] || {})
-        : flatten(listenable);
+        : flatten(listenable).sort();
     const events = getChannel().reduce(find, []);
     const broadcast = format ? format(events) : events;
     const value = broadcast || {};
-    const getValue = () =>
-      typeof prop === "function" ? prop(value) : { [prop]: value };
 
-    return Object.assign(stack, getValue());
+    return Object.assign(
+      stack,
+      isFunction(prop) ? prop(value) : { [prop]: value }
+    );
   };
   const getListenersFrom = props => listeners.reduce(extract(props), {});
 
@@ -168,12 +150,12 @@ export const connectToDB = props => {
   const { DB = Object.create } = children;
   const namespace = getDisplayName(children);
   const listen = listenTo(history);
-  const Listen = ({ children, to, as, format }) =>
+  const Listen = ({ children, to, as, ...settings }) =>
     Children.map(children, child =>
       listen({
         prop: as,
         method: to,
-        format
+        ...settings
       }).in(child)
     );
 
@@ -188,31 +170,21 @@ export const connectToDB = props => {
   };
 };
 
-export const hookEvents = () => ({
-  componentDidMount() {
-    const {
-      props: { load = noop, register = noop }
-    } = this;
-
-    register();
-    load();
-  },
-  componentWillUnmount() {
-    const {
-      props: { deregister = noop, network }
-    } = this;
-
-    network.forEach(shutdown);
-
-    deregister();
-  }
-});
-
 export default compose(
   connect(selectors),
   withStateHandlers(initialState, reducers),
   withProps(connectToDB),
-  lifecycle(hookEvents()),
-  omitProps(reserved),
+  lifecycle(events),
+  omitProps([
+    "dispatch",
+    "register",
+    "deregister",
+    "history",
+    "log",
+    "dismiss",
+    "network",
+    "connect",
+    "disconnect"
+  ]),
   setStatics(statics)
 );
