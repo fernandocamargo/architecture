@@ -1,3 +1,4 @@
-import React from "react";
+import compose from "./composition";
+import Render from "./render";
 
-export default () => <h1>Cockpit</h1>;
+export default compose(Render);
