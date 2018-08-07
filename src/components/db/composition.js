@@ -15,6 +15,7 @@ import { RUN } from "actions";
 import Promise from "helpers/promise";
 import ensure from "helpers/array/ensure";
 import replace from "helpers/object/replace";
+import starts from "helpers/string/starts";
 import setStatics from "helpers/rendering/statics/set";
 import omitProps from "behaviors/omit-props";
 import { register, deregister } from "mutations";
@@ -39,6 +40,9 @@ export const reserved = [
 export const cancel = promise => promise.cancel();
 
 export const shutdown = (_, promise) => cancel(promise);
+
+export const dig = (stack, [_, activity]) =>
+  stack.concat(Object.entries(activity));
 
 export const wrap = promise =>
   new Promise((resolve, reject) => promise.then(resolve).catch(reject));
@@ -110,6 +114,10 @@ export const bindTo = props => (path, method) => {
   return Object.assign(wrapped, { fingerprint: namespace });
 };
 
+export const search = subset => ({
+  in: set => !!~String(set).indexOf(String(subset))
+});
+
 export const listenTo = listenable => settings => {
   const listeners = ensure(settings);
   const extract = props => (
@@ -117,19 +125,32 @@ export const listenTo = listenable => settings => {
     { prop, method = {}, params = constant(""), format }
   ) => {
     const { fingerprint } = method;
-    const channel = listenable[fingerprint] || {};
     const find = (stack, [timestamp, details]) => {
-      const match = !!~details.params
-        .toString()
-        .indexOf(params(props).toString());
+      const namespaced = typeof method === "string";
+      /*
+      const match = !![
+        namespaced && search(method).in(details.path),
+        search(params(props)).in(details.params)
+      ].filter(Boolean).length;
+      */
+      const match = namespaced
+        ? starts(details.path.join(".")).with(method)
+        : true;
 
       return !match ? stack : stack.concat({ ...details, timestamp });
     };
-    const events = Object.entries(channel).reduce(find, []);
+    const flatten = object => Object.entries(object).reduce(dig, []);
+    const getChannel = () =>
+      !!fingerprint
+        ? Object.entries(listenable[fingerprint] || {})
+        : flatten(listenable);
+    const events = getChannel().reduce(find, []);
     const broadcast = format ? format(events) : events;
     const value = broadcast || {};
+    const getValue = () =>
+      typeof prop === "function" ? prop(value) : { [prop]: value };
 
-    return Object.assign(stack, { [prop]: value });
+    return Object.assign(stack, getValue());
   };
   const getListenersFrom = props => listeners.reduce(extract(props), {});
 

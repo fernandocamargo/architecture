@@ -1,1 +1,1 @@
-export const RUN = "🏃";
+export const RUN = "🧠";

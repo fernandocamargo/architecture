@@ -5,9 +5,9 @@ import React, { Fragment } from "react";
 export const prevent = callback => event =>
   event.preventDefault() || callback(event);
 
-export const getStatus = ({ output, error }) => {
+export const getStatus = ({ loading, output, error }) => {
   switch (true) {
-    case !!output:
+    case !!output || (!loading && !error):
       return <span style={{ color: "green" }}>success</span>;
     case !!error:
       return <span style={{ color: "red" }}>fail</span>;
@@ -58,11 +58,7 @@ export const Logger = ({ title, log }) =>
 export const stringify = object =>
   typeof object === "string" ? object : JSON.stringify(object, null, 2);
 
-export const Button = ({
-  onClick,
-  children,
-  lol: { loading, output, error }
-}) => (
+export const Button = ({ onClick, children, loading, output, error }) => (
   <Fragment>
     <button onClick={onClick} disabled={loading}>
       {children} {loading && "(loading...)"}
@@ -83,8 +79,6 @@ export const Button = ({
   </Fragment>
 );
 
-export const Props = props => <pre>{JSON.stringify(props, null, 2)}</pre>;
-
 export default ({
   test,
   Listen,
@@ -102,15 +96,20 @@ export default ({
     <p>Bar chart</p>
     <p>Line chart</p>
     <p>Table</p>
-    <Listen to={test} as="lol" format={last}>
-      <Props />
+    <Listen to={"a.b.c.d"} as="log">
+      <Logger title="Listening to a namespace" />
+    </Listen>
+    <Listen to={test} as={status => status} format={last}>
       <Button onClick={() => test()}>Testing</Button>
     </Listen>
     <Listen to={test} as="log">
       <Logger title="Listening to test();" />
     </Listen>
-    <Listen to={"a"} as="log">
-      <Logger title="Listening to namespace" />
+    <Listen to={test} as={status => status} format={last}>
+      <Button onClick={() => test()}>Testing</Button>
+    </Listen>
+    <Listen as="log">
+      <Logger title="Listening to everything" />
     </Listen>
     <table>
       <tbody>
@@ -130,7 +129,23 @@ export default ({
             <button onClick={() => g(1)}>G</button>
           </td>
           <td>
-            <button onClick={() => h(2)}>H</button>
+            <button
+              onClick={() =>
+                h(2, { foo: "bar" }, ["a", "b", "c"], {
+                  lol: [
+                    {
+                      first: {
+                        second: {
+                          third: [{ fourth: { fifth: "lol" } }]
+                        }
+                      }
+                    }
+                  ]
+                })
+              }
+            >
+              H
+            </button>
           </td>
           <td>
             <button onClick={() => i(random(1, 10))}>I</button>
