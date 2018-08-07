@@ -1,6 +1,6 @@
 export { default as DB } from "./db";
 
-export const displayName = "Features/Profit/Overview";
+export const displayName = "Features/Cockpit";
 
 export const propTypes = {};
 
