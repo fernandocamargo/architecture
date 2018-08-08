@@ -6,7 +6,7 @@ import Table from "components/table";
 
 export const Chart = () => <p>This is a chart</p>;
 
-export default ({ className }) => (
+export default ({ className, sales }) => (
   <div className={className}>
     <Form />
     <Widget>
@@ -17,13 +17,11 @@ export default ({ className }) => (
     </Widget>
     <Widget>
       <Table
-        rows={[
-          { foo: "bar 1" },
-          { foo: "bar 2" },
-          { foo: "bar 3" },
-          { foo: "bar 4" }
+        rows={sales.results}
+        columns={[
+          { label: () => "starred", content: ({ starred }) => String(starred) },
+          { label: "ASIN", content: ({ asin }) => asin }
         ]}
-        columns={[{ label: "LOL", content: ({ foo }) => foo }]}
       />
     </Widget>
   </div>

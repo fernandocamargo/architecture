@@ -1,8 +1,11 @@
-import { setSomething } from "mutations";
+import parse from "helpers/request/parse";
+
+import { setSales } from "./mutations";
 
 export default props => ({
   load: () =>
-    new Promise(resolve =>
-      window.setTimeout(() => resolve({ foo: "bar", array: [1, 2, 3] }), 500)
-    ).then(response => ({ mutation: setSomething(response) }))
+    window
+      .fetch("/profit/sales/")
+      .then(parse)
+      .then(sales => ({ mutation: setSales(sales) }))
 });

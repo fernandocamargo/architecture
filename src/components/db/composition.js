@@ -2,7 +2,7 @@ import constant from "lodash/constant";
 import isString from "lodash/isString";
 import isFunction from "lodash/isFunction";
 import md5 from "md5";
-import { isValidElement, cloneElement, createElement, Children } from "react";
+import { isValidElement, cloneElement, createElement } from "react";
 import {
   compose,
   getDisplayName,
@@ -128,20 +128,32 @@ export const listenTo = listenable => settings => {
     const events = getChannel().reduce(find, []);
     const broadcast = format ? format(events) : events;
     const value = broadcast || {};
+    const getValue = () => {
+      switch (true) {
+        case !prop:
+          return value;
+        case isFunction(prop):
+          return prop(value);
+        default:
+          return { [prop]: value };
+      }
+    };
 
-    return Object.assign(
-      stack,
-      isFunction(prop) ? prop(value) : { [prop]: value }
-    );
+    return Object.assign(stack, getValue());
   };
   const getListenersFrom = props => listeners.reduce(extract(props), {});
 
   return {
-    in: component =>
-      isValidElement(component)
-        ? cloneElement(component, getListenersFrom())
-        : props =>
-            createElement(component, { ...props, ...getListenersFrom(props) })
+    clone: component =>
+      cloneElement(component, { key: md5(component), ...getListenersFrom() }),
+    wrap: component => props =>
+      createElement(component, {
+        key: md5(component),
+        ...props,
+        ...getListenersFrom(props)
+      }),
+    create: component =>
+      createElement(component, { key: md5(component), ...getListenersFrom() })
   };
 };
 
@@ -151,13 +163,16 @@ export const connectToDB = props => {
   const namespace = getDisplayName(children);
   const listen = listenTo(history);
   const Listen = ({ children, to, as, ...settings }) =>
-    Children.map(children, child =>
-      listen({
+    ensure(children).map(child => {
+      const method = isValidElement(child) ? "clone" : "create";
+      const listener = listen({
         prop: as,
         method: to,
         ...settings
-      }).in(child)
-    );
+      })[method];
+
+      return listener(child);
+    });
 
   return {
     ...replace({
