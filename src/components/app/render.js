@@ -1,7 +1,7 @@
 import React from "react";
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
-import Menu from "components/menu";
+import Header from "components/header";
 import {
   Cockpit,
   Rankings,
@@ -14,14 +14,7 @@ import {
 
 export default ({ children, className, menu }) => (
   <div className={className}>
-    <header className="header">
-      <h2>
-        <Link to="/" title="Sellics">
-          Sellics
-        </Link>
-      </h2>
-      <Menu>{menu}</Menu>
-    </header>
+    <Header menu={menu} />
     <main role="main" className="content">
       <Route path="/" component={Cockpit} exact />
       <Route path="/rankings" component={Rankings} />
