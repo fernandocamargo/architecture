@@ -22,7 +22,7 @@
     "react-loadable": "^5.4.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "next",
     "recompose": "^0.27.1",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.2",
@@ -39,8 +39,22 @@
     "i18n": "yarn run i18n:extract && yarn run i18n:translate"
   },
   "devDependencies": {
+    "babel-plugin-emotion": "^9.2.6",
+    "babel-plugin-macros": "^2.4.0",
     "react-intl-cra": "^0.3.3",
     "react-intl-translations-manager": "^5.0.3"
   },
-  "proxy": "http://localhost:1337/"
+  "proxy": "http://localhost:1337/",
+  "browserslist": {
+    "development": [
+      "last 2 chrome versions",
+      "last 2 firefox versions",
+      "last 2 edge versions"
+    ],
+    "production": [
+      ">0.25%",
+      "not op_mini all",
+      "ie 11"
+    ]
+  }
 }

@@ -1,5 +1,11 @@
-import styled from "react-emotion";
+import styled from "react-emotion/macro";
+
+import Menu from "components/menu";
 
 export default component => styled(component)`
-  padding: 1rem;
+  h2 {
+  }
+
+  ${Menu} {
+  }
 `;

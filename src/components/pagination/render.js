@@ -12,12 +12,12 @@ export default ({ current, total, move, onPaginate }) => (
       <h4>Browse through:</h4>
       <ul>
         <li>
-          <a href="" title="Previous page" onClick={move(-1)}>
+          <a href="/" title="Previous page" onClick={move(-1)}>
             Previous page
           </a>
         </li>
         <li>
-          <a href="" title="Next page" onClick={move(+1)}>
+          <a href="/" title="Next page" onClick={move(+1)}>
             Next page
           </a>
         </li>

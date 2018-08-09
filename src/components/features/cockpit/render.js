@@ -33,7 +33,10 @@ export const LoggerItem = ({
     }}
   >
     <dt>
-      <h2>Method: {path.join(".")}();</h2>
+      <h2>
+        Method: {path.join(".")}
+        ();
+      </h2>
     </dt>
     <dt>
       <h2>Params:</h2>
@@ -50,7 +53,7 @@ export const LoggerItem = ({
     <dd>Status: {getStatus(props)}</dd>
     {!!dismiss && (
       <dd>
-        <a href="" title="Dismiss" onClick={prevent(dismiss)}>
+        <a href="/" title="Dismiss" onClick={prevent(dismiss)}>
           Dismiss
         </a>
       </dd>
@@ -62,7 +65,9 @@ export const Logger = ({ title, log }) =>
   !!log.length && (
     <div style={{ border: "dotted 1px #000" }}>
       <h1>{title}</h1>
-      {log.map((item, key) => <LoggerItem key={key} {...item} />)}
+      {log.map((item, key) => (
+        <LoggerItem key={key} {...item} />
+      ))}
     </div>
   );
 
