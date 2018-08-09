@@ -6,6 +6,9 @@ export const propTypes = {};
 
 export const defaultProps = {
   sales: {
-    results: []
+    results: [],
+    meta: {
+      pagination: {}
+    }
   }
 };
