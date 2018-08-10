@@ -5,7 +5,7 @@ import Menu from "components/menu";
 
 export default ({ className, menu }) => (
   <header className={className}>
-    <Brand />
+    <Brand url="/" />
     <Menu>{menu}</Menu>
   </header>
 );

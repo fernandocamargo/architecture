@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 
 import Header from "components/header";
+import Content from "components/content";
 import {
   Cockpit,
   Rankings,
@@ -15,7 +16,7 @@ import {
 export default ({ children, className, menu }) => (
   <div className={className}>
     <Header menu={menu} />
-    <main role="main" className="content">
+    <Content>
       <Route path="/" component={Cockpit} exact />
       <Route path="/rankings" component={Rankings} />
       <Route path="/reviews" component={Reviews} />
@@ -23,6 +24,6 @@ export default ({ children, className, menu }) => (
       <Route path="/inventory" component={Inventory} />
       <Route path="/profit" component={Profit} />
       <Route path="/ppc-manager" component={PPCManager} />
-    </main>
+    </Content>
   </div>
 );

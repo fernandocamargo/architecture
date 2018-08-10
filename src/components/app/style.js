@@ -1,15 +1,7 @@
 import styled from "react-emotion/macro";
 
-import Header from "components/header";
-import Menu from "components/menu";
+import { HEIGHT } from "components/header/style";
 
 export default component => styled(component)`
-  h2 {
-  }
-
-  ${Header} {
-    ${Menu} {
-      background-color: #cda;
-    }
-  }
+  padding-top: ${HEIGHT}px;
 `;
