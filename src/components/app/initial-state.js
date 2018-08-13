@@ -12,12 +12,12 @@ export const extractURLFrom = (items, base = "") => {
 
 export default () => ({
   menu: extractURLFrom([
-    { title: "Cockpit", url: "/" },
-    { title: "Rankings", url: "/rankings" },
-    { title: "Reviews", url: "/reviews" },
-    { title: "Spy", url: "/spy" },
-    { title: "Inventory", url: "/inventory" },
-    { title: "Profit", url: "/profit" },
-    { title: "PPC Manager", url: "/ppc-manager" }
+    { title: "Cockpit", url: "/", id: "home" },
+    { title: "Rankings", url: "/rankings", id: "rankings" },
+    { title: "Reviews", url: "/reviews", id: "reviews" },
+    { title: "Spy", url: "/spy", id: "spy" },
+    { title: "Inventory", url: "/inventory", id: "inventory" },
+    { title: "Profit", url: "/profit", id: "profit" },
+    { title: "PPC Manager", url: "/ppc-manager", id: "ppc-manager" }
   ])
 });
