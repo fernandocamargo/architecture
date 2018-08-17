@@ -8,8 +8,9 @@ import {
 } from "components/header/style";
 import Menu, { Item as MenuItem } from "components/menu";
 
-export const HEIGHT = MENU_HEIGHT / 2;
+export const HEIGHT = MENU_HEIGHT * 0.75;
 export const TOP = MENU_HEIGHT;
+export const PADDING_TOP = 30;
 export const ZINDEX = MENU_ZINDEX - 1;
 export const ICONS = {
   overview: '"\\f109"',
@@ -22,6 +23,9 @@ export const ICONS = {
 };
 
 export default component => styled(component)`
+  padding-top: ${({ menu }) =>
+    !!menu.length ? `${HEIGHT + PADDING_TOP}px` : `${PADDING_TOP}px`};
+
   & > {
     ${Menu} {
       align-items: center;
