@@ -7,7 +7,7 @@ import initialState from "./initial-state";
 import withStyle from "./style";
 
 export default compose(
-  withStyle,
   withStateHandlers(initialState),
+  withStyle,
   setStatics(statics)
 );
