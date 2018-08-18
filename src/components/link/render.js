@@ -1,4 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink as Link } from "react-router-dom";
 
-export default props => <Link {...props} />;
+export default ({ to, title, className, children, attributes }) => (
+  <Link
+    {...attributes}
+    to={to}
+    className={className}
+    activeClassName="active"
+    exact
+  >
+    {children}
+  </Link>
+);

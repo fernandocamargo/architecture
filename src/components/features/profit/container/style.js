@@ -7,8 +7,10 @@ import {
   shadow
 } from "components/header/style";
 import Menu, { Item as MenuItem } from "components/menu";
+import Link from "components/link";
 
 export const HEIGHT = MENU_HEIGHT * 0.75;
+export const WIDTH = 1326;
 export const TOP = MENU_HEIGHT;
 export const PADDING_TOP = 20;
 export const ZINDEX = MENU_ZINDEX - 1;
@@ -23,6 +25,8 @@ export const ICONS = {
 };
 
 export default component => styled(component)`
+  margin: 0 auto;
+  max-width: ${WIDTH}px;
   padding-top: ${({ menu }) =>
     !!menu.length ? `${HEIGHT + PADDING_TOP}px` : `${PADDING_TOP}px`};
 
@@ -38,11 +42,30 @@ export default component => styled(component)`
       width: 100vw;
       z-index: ${ZINDEX};
       ${shadow};
-    }
-  }
 
-  ${MenuItem} {
-    margin-left: 50px;
+      ${MenuItem} {
+        ${Link} {
+          position: relative;
+
+          &.active {
+            background-color: rgba(93, 157, 252, 1);
+            color: #fff;
+            margin: -18px -10px;
+            padding: 18px 10px;
+          }
+        }
+
+        &:first-child {
+          ${Link} {
+            margin-left: -15px;
+
+            &.active {
+              margin-left: -25px;
+            }
+          }
+        }
+      }
+    }
   }
 
   ${({ menu }) => menuItem({ icons: ICONS, items: menu })};

@@ -73,7 +73,7 @@ export const menuItem = settings => props => {
         font-weight: 400;
         position: relative;
         text-decoration: none;
-        transition: color 0.25s linear;
+        transition: color 0.2s linear;
 
         &:before {
           ${icon(props)};
@@ -94,7 +94,7 @@ export const menuItem = settings => props => {
           left: calc(100% - 12px);
         }
 
-        &:hover {
+        &:not(.active):hover {
           color: rgba(93, 157, 252, 1);
         }
       }
@@ -138,6 +138,10 @@ export default component => styled(component)`
       position: absolute;
       top: 0;
       width: 1px;
+    }
+
+    ${Link}.active {
+      color: rgba(93, 157, 252, 1);
     }
   }
 
