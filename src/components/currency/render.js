@@ -1,1 +1,4 @@
-export default ({ children }) => Number(children).toFixed(2);
+import React from "react";
+import { FormattedNumber } from "react-intl";
+
+export default ({ children }) => <FormattedNumber value={children} />;

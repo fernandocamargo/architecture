@@ -10,7 +10,7 @@ import Menu, { Item as MenuItem } from "components/menu";
 
 export const HEIGHT = MENU_HEIGHT * 0.75;
 export const TOP = MENU_HEIGHT;
-export const PADDING_TOP = 30;
+export const PADDING_TOP = 20;
 export const ZINDEX = MENU_ZINDEX - 1;
 export const ICONS = {
   overview: '"\\f109"',

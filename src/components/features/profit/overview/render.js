@@ -4,43 +4,28 @@ import React, { Fragment } from "react";
 import Form from "components/form";
 import Widget from "components/widget";
 import Menu from "components/menu";
+import Currency from "components/currency";
+import Percentage from "components/percentage";
 import Table from "components/table";
+import Product from "components/product";
 import Pagination from "components/pagination";
 
 export const Chart = () => <p>This is a chart</p>;
 
-export const Currency = ({ children }) => children;
-
-export const Percentage = ({ children }) => children;
-
-export const Product = ({ name, asin, sku }) => (
-  <blockquote>
-    <dl>
-      <dt>Product name</dt>
-      <dd>{name}</dd>
-    </dl>
-    <dl>
-      <dt>ASIN</dt>
-      <dd>
-        <a href={asin.url} title={asin.title} target="_blank">
-          {asin.title}
-        </a>
-      </dd>
-    </dl>
-    <dl>
-      <dt>Sku</dt>
-      <dd>
-        <a href={sku.url} title={sku.title} target="_blank">
-          {sku.title}
-        </a>
-      </dd>
-    </dl>
-  </blockquote>
-);
-
 export default ({ className, sales }) => (
   <div className={className}>
-    <Form />
+    <Widget>
+      <Form
+        fields={[
+          {
+            name: "context-region",
+            type: "checkbox",
+            label: "DE",
+            value: true
+          }
+        ]}
+      />
+    </Widget>
     <Widget>
       <Chart />
     </Widget>
