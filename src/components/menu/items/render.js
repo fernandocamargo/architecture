@@ -4,6 +4,6 @@ import forEach from "helpers/rendering/for-each";
 import List from "components/list";
 import MenuItem from "components/menu/item";
 
-export default ({ children }) => (
-  <List>{forEach(children).render(MenuItem)}</List>
+export default ({ children, isActive }) => (
+  <List>{forEach(children).render(MenuItem, !!isActive && { isActive })}</List>
 );

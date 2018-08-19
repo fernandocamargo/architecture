@@ -37,6 +37,7 @@ export default component => styled(component)`
       display: flex;
       height: ${HEIGHT}px;
       left: 0;
+      overflow: hidden;
       position: fixed;
       top: ${TOP}px;
       width: 100vw;
@@ -45,13 +46,15 @@ export default component => styled(component)`
 
       ${MenuItem} {
         ${Link} {
+          background-color: transparent;
           position: relative;
 
           &.active {
             background-color: rgba(93, 157, 252, 1);
             color: #fff;
-            margin: -18px -10px;
-            padding: 18px 10px;
+            margin: -20px -10px;
+            padding: 20px 10px;
+            transition: background-color 0.2s linear, color 0.2s linear;
           }
         }
 
