@@ -1,8 +1,11 @@
 import React from "react";
 
-export default ({ id, label, value, change }) => (
-  <div>
-    <input
+import Field from "components/field";
+import Input from "components/input";
+
+export default ({ className, id, label, value, change }) => (
+  <Field className={className}>
+    <Input
       id={id}
       type="checkbox"
       value="true"
@@ -10,5 +13,5 @@ export default ({ id, label, value, change }) => (
       onChange={change}
     />
     {label && <label htmlFor={id}>{label}</label>}
-  </div>
+  </Field>
 );

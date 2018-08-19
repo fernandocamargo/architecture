@@ -1,7 +1,7 @@
 import React from "react";
 
-export default ({ submit, title, fields }) => (
-  <form onSubmit={submit}>
+export default ({ className, submit, title, fields }) => (
+  <form className={className} onSubmit={submit}>
     <fieldset>
       {title && <legend>{title}</legend>}
       {fields}

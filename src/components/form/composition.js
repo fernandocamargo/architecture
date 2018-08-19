@@ -5,10 +5,12 @@ import setStatics from "helpers/rendering/statics/set";
 import * as Fields from "components/fields";
 
 import * as statics from "./statics";
+import withStyle from "./style";
 import initialState from "./initial-state";
 import * as reducers from "./reducers";
 
 export default compose(
+  withStyle,
   setStatics(statics),
   withStateHandlers(initialState, reducers),
   withHandlers({
