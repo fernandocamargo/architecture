@@ -55,6 +55,9 @@ export default ({ className, sales }) => (
             borderWidth: 1,
             shadow: false
           },
+          credits: {
+            enabled: false
+          },
           tooltip: {
             headerFormat: "<b>{point.x}</b><br/>",
             pointFormat:
@@ -173,88 +176,84 @@ export default ({ className, sales }) => (
       />
     </Widget>
     <Widget>
-      <div>
-        <h3>Products</h3>
-        <Form />
-        <Menu>
-          {[
-            { url: "", title: "Export" },
-            { url: "", title: "Edit" },
-            { url: "", title: "Settings" }
-          ]}
-        </Menu>
-        <Table
-          rows={sales.results}
-          columns={[
-            {
-              label: () => "starred",
-              content: ({ item: { starred } }) => String(starred)
-            },
-            {
-              label: () => <Fragment>Product</Fragment>,
-              content: ({
-                item: { productName, customName },
-                links: { amazon, sellerCentral },
-                pk: { sku },
-                asin
-              }) => (
-                <Product
-                  name={customName || productName}
-                  sku={{ title: sku, url: amazon }}
-                  asin={{ title: asin, url: sellerCentral }}
-                />
-              )
-            },
-            {
-              label: "Sales",
-              content: ({ sales: { value, percentage } }) => (
-                <Percentage value={percentage}>
-                  <Currency>{value}</Currency>
-                </Percentage>
-              )
-            },
-            { label: "Orders", content: property("orders") },
-            { label: "Refunds", content: property("refunds") },
-            {
-              label: "Profit",
-              content: ({ profit: { value, percentage } }) => (
-                <Percentage value={percentage}>
-                  <Currency>{value}</Currency>
-                </Percentage>
-              )
-            },
-            {
-              label: "Margin",
-              content: ({ profit: { value, percentage } }) => (
-                <Percentage value={percentage}>
-                  <Currency>{value}</Currency>
-                </Percentage>
-              )
-            },
-            {
-              label: () => "Info",
-              content: () => (
-                <Menu>{[{ url: "", title: "Link to Amazon" }]}</Menu>
-              )
-            },
-            {
-              label: () => "Details",
-              content: () => (
-                <Menu>
-                  {[
-                    { url: "", title: "Calculate something" },
-                    { url: "", title: "See charts" }
-                  ]}
-                </Menu>
-              )
-            }
-          ]}
-        />
-        <Pagination
-          {...sales.meta.pagination}
-          onPaginate={({ page }) => console.log("onPaginate();", +page)}
-        />
-      </div>
+      <h3>Products</h3>
+      <Form />
+      <Menu>
+        {[
+          { url: "", title: "Export" },
+          { url: "", title: "Edit" },
+          { url: "", title: "Settings" }
+        ]}
+      </Menu>
+      <Table
+        rows={sales.results}
+        columns={[
+          {
+            label: () => "starred",
+            content: ({ item: { starred } }) => String(starred)
+          },
+          {
+            label: () => <Fragment>Product</Fragment>,
+            content: ({
+              item: { productName, customName },
+              links: { amazon, sellerCentral },
+              pk: { sku },
+              asin
+            }) => (
+              <Product
+                name={customName || productName}
+                sku={{ title: sku, url: amazon }}
+                asin={{ title: asin, url: sellerCentral }}
+              />
+            )
+          },
+          {
+            label: "Sales",
+            content: ({ sales: { value, percentage } }) => (
+              <Percentage value={percentage}>
+                <Currency>{value}</Currency>
+              </Percentage>
+            )
+          },
+          { label: "Orders", content: property("orders") },
+          { label: "Refunds", content: property("refunds") },
+          {
+            label: "Profit",
+            content: ({ profit: { value, percentage } }) => (
+              <Percentage value={percentage}>
+                <Currency>{value}</Currency>
+              </Percentage>
+            )
+          },
+          {
+            label: "Margin",
+            content: ({ profit: { value, percentage } }) => (
+              <Percentage value={percentage}>
+                <Currency>{value}</Currency>
+              </Percentage>
+            )
+          },
+          {
+            label: () => "Info",
+            content: () => <Menu>{[{ url: "", title: "Link to Amazon" }]}</Menu>
+          },
+          {
+            label: () => "Details",
+            content: () => (
+              <Menu>
+                {[
+                  { url: "", title: "Calculate something" },
+                  { url: "", title: "See charts" }
+                ]}
+              </Menu>
+            )
+          }
+        ]}
+      />
+      <Pagination
+        {...sales.meta.pagination}
+        onPaginate={({ page }) => console.log("onPaginate();", +page)}
+      />
     </Widget>
   </div>
 );
