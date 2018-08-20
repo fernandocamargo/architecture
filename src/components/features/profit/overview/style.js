@@ -1,6 +1,14 @@
-import styled from "react-emotion/macro";
+import styled, { css } from "react-emotion/macro";
 
 import Widget from "components/widget";
+
+export const widget = () => css`
+  background-color: #fff;
+  border: solid 1px rgba(233, 233, 233, 1);
+  border-radius: 4px;
+  box-shadow: 0px 1px 8px -2px rgb(197, 206, 224);
+  overflow: hidden;
+`;
 
 export default component => styled(component)`
   display: grid;
@@ -11,6 +19,10 @@ export default component => styled(component)`
     "fourth fourth";
 
   ${Widget} {
+    &:not(:nth-child(1)) {
+      ${widget};
+    }
+
     &:nth-child(1) {
       grid-area: first;
     }

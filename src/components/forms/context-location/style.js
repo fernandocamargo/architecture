@@ -5,6 +5,10 @@ import Checkbox from "components/fields/checkbox";
 import Input from "components/input";
 
 export default component => styled(component)`
+  legend {
+    display: none;
+  }
+
   ${Checkbox} {
     background-color: #fff;
     border: solid 1px #699ef5;
