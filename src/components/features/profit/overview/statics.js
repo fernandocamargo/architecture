@@ -5,6 +5,7 @@ export const displayName = "Features/Profit/Overview";
 export const propTypes = {};
 
 export const defaultProps = {
+  details: [],
   sales: {
     results: [],
     meta: {

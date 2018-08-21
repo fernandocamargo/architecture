@@ -17,6 +17,7 @@ export default component => styled(component)`
     "first first"
     "second third"
     "fourth fourth";
+  grid-template-columns: 50% 50%;
 
   ${Widget} {
     &:not(:nth-child(1)) {

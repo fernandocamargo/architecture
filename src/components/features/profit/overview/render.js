@@ -11,8 +11,9 @@ import Product from "components/product";
 import Pagination from "components/pagination";
 import FormContextLocation from "components/forms/context-location";
 import Chart from "components/chart";
+import { XRay as ChartXRay } from "components/charts";
 
-export default ({ className, sales }) => (
+export default ({ className, details, sales }) => (
   <div className={className}>
     <Widget>
       <FormContextLocation
@@ -20,74 +21,7 @@ export default ({ className, sales }) => (
       />
     </Widget>
     <Widget>
-      <Chart
-        {...{
-          chart: {
-            type: "column"
-          },
-          title: {
-            text: ""
-          },
-          xAxis: {
-            categories: ["Apples", "Oranges", "Pears", "Grapes", "Bananas"]
-          },
-          yAxis: {
-            min: 0,
-            title: {
-              enabled: false
-            },
-            stackLabels: {
-              enabled: true,
-              style: {
-                fontWeight: "bold",
-                color: "gray"
-              }
-            }
-          },
-          legend: {
-            align: "right",
-            x: -30,
-            verticalAlign: "top",
-            y: 25,
-            floating: true,
-            backgroundColor: "white",
-            borderColor: "#CCC",
-            borderWidth: 1,
-            shadow: false
-          },
-          credits: {
-            enabled: false
-          },
-          tooltip: {
-            headerFormat: "<b>{point.x}</b><br/>",
-            pointFormat:
-              "{series.name}: {point.y}<br/>Total: {point.stackTotal}"
-          },
-          plotOptions: {
-            column: {
-              stacking: "normal",
-              dataLabels: {
-                enabled: true,
-                color: "white"
-              }
-            }
-          },
-          series: [
-            {
-              name: "John",
-              data: [5, 3, 4, 7, 2]
-            },
-            {
-              name: "Jane",
-              data: [2, 2, 3, 2, 1]
-            },
-            {
-              name: "Joe",
-              data: [3, 4, 4, 2, 5]
-            }
-          ]
-        }}
-      />
+      <ChartXRay data={details} />
     </Widget>
     <Widget>
       <Chart

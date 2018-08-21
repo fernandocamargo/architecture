@@ -1,11 +1,14 @@
 import parse from "helpers/request/parse";
 
-import { setSales } from "./mutations";
+import { setDetails, setSales } from "./mutations";
+
+export const fetch = url => window.fetch(url).then(parse);
 
 export default props => ({
   load: () =>
-    window
-      .fetch("/profit/sales/")
-      .then(parse)
-      .then(sales => ({ mutation: setSales(sales) }))
+    Promise.all([fetch("/profit/sales/"), fetch("/profit/details/")]).then(
+      ([sales, details]) => ({
+        mutation: [setDetails(details), setSales(sales)]
+      })
+    )
 });
