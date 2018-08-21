@@ -6,11 +6,13 @@ export const propTypes = {
   type: string.isRequired,
   value: number,
   percentage: number,
-  details: arrayOf(shape({}))
+  details: arrayOf(shape({})),
+  legend: arrayOf(shape({}))
 };
 
 export const defaultProps = {
   value: 0,
   percentage: 0,
-  details: []
+  details: [],
+  legend: []
 };

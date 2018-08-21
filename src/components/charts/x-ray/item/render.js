@@ -9,22 +9,25 @@ export default ({
   type,
   value,
   percentage,
-  details
+  details,
+  legend
 }) => (
   <Definition>
     <Title>
       <strong>{formatMessage(GenericMessages[type])}</strong>
     </Title>
     <Title>
-      <span>Value: </span>
+      <span>{formatMessage(GenericMessages.value)}: </span>
       <em>{value}</em>
     </Title>
     <Title>
-      <span>Percentage: </span>
+      <span>{formatMessage(GenericMessages.percentage)}: </span>
       <em>{percentage}%</em>
     </Title>
-    <Description>
-      <Items>{details}</Items>
-    </Description>
+    {(!!details.length || !!legend.length) && (
+      <Description>
+        <Items>{details}</Items>
+      </Description>
+    )}
   </Definition>
 );

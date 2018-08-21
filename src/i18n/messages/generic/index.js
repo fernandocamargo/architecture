@@ -84,5 +84,17 @@ export default defineMessages({
   profit: {
     id: "generic.profit",
     defaultMessage: "Profit"
+  },
+  value: {
+    id: "generic.value",
+    defaultMessage: "Value"
+  },
+  percentage: {
+    id: "generic.percentage",
+    defaultMessage: "Percentage"
+  },
+  details: {
+    id: "generic.details",
+    defaultMessage: "Details"
   }
 });
