@@ -1,5 +1,6 @@
 import React from "react";
 
+import Definition, { Title, Description } from "components/definition";
 import Items from "components/charts/x-ray/items";
 import { Generic as GenericMessages } from "i18n/messages";
 
@@ -10,20 +11,20 @@ export default ({
   percentage,
   details
 }) => (
-  <dl>
-    <dt>
+  <Definition>
+    <Title>
       <strong>{formatMessage(GenericMessages[type])}</strong>
-    </dt>
-    <dt>
+    </Title>
+    <Title>
       <span>Value: </span>
       <em>{value}</em>
-    </dt>
-    <dt>
+    </Title>
+    <Title>
       <span>Percentage: </span>
       <em>{percentage}%</em>
-    </dt>
-    <dd>
+    </Title>
+    <Description>
       <Items>{details}</Items>
-    </dd>
-  </dl>
+    </Description>
+  </Definition>
 );
