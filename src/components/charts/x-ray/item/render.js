@@ -1,11 +1,18 @@
 import React from "react";
 
 import Items from "components/charts/x-ray/items";
+import { Generic as GenericMessages } from "i18n/messages";
 
-export default ({ label, value, percentage, details }) => (
+export default ({
+  intl: { formatMessage },
+  type,
+  value,
+  percentage,
+  details
+}) => (
   <dl>
     <dt>
-      <strong>{label}</strong>
+      <strong>{formatMessage(GenericMessages[type])}</strong>
     </dt>
     <dt>
       <span>Value: </span>

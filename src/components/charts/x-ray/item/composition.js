@@ -1,4 +1,5 @@
 import { compose } from "recompose";
+import { injectIntl } from "react-intl";
 
 import setStatics from "helpers/rendering/statics/set";
 
@@ -7,5 +8,6 @@ import withStyle from "./style";
 
 export default compose(
   withStyle,
+  injectIntl,
   setStatics(statics)
 );
