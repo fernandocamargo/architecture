@@ -45,6 +45,14 @@ export default defineMessages({
     id: "generic.organic-sales",
     defaultMessage: "Organic Sales"
   },
+  units: {
+    id: "generic.units",
+    defaultMessage: "Units"
+  },
+  orders: {
+    id: "generic.orders",
+    defaultMessage: "Orders"
+  },
   costs: {
     id: "generic.costs",
     defaultMessage: "Costs"
@@ -81,9 +89,17 @@ export default defineMessages({
     id: "generic.cost-of-goods",
     defaultMessage: "Cost of goods"
   },
+  promos: {
+    id: "generic.promos",
+    defaultMessage: "Promos"
+  },
   profit: {
     id: "generic.profit",
     defaultMessage: "Profit"
+  },
+  margin: {
+    id: "generic.margin",
+    defaultMessage: "Margin"
   },
   value: {
     id: "generic.value",
