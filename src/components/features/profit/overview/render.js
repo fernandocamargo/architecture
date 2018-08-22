@@ -11,7 +11,6 @@ import Product from "components/product";
 import Pagination from "components/pagination";
 import FormContextLocation from "components/forms/context-location";
 import Chart from "components/chart";
-import { XRay as ChartXRay } from "components/charts";
 
 export default ({ className, details, sales }) => (
   <div className={className}>
@@ -21,13 +20,40 @@ export default ({ className, details, sales }) => (
       />
     </Widget>
     <Widget>
-      <ChartXRay data={details} />
+      <Chart
+        {...{
+          chart: {
+            type: "waterfall"
+          },
+          title: {
+            text: ""
+          },
+          yAxis: {
+            visible: false
+          },
+          credits: {
+            enabled: false
+          },
+          legend: {
+            enabled: false
+          },
+          series: [
+            {
+              data: [
+                { name: "Gross Sales", y: 150 },
+                { name: "Costs", y: -118 },
+                { name: "Profit", y: 32, isSum: true }
+              ]
+            }
+          ]
+        }}
+      />
     </Widget>
     <Widget>
       <Chart
         {...{
           chart: {
-            type: "line"
+            type: "spline"
           },
           title: {
             text: ""
@@ -42,25 +68,10 @@ export default ({ className, details, sales }) => (
             enabled: false
           },
           xAxis: {
-            categories: [
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec"
-            ]
+            visible: false
           },
           yAxis: {
-            title: {
-              enabled: false
-            }
+            visible: false
           },
           plotOptions: {
             line: {

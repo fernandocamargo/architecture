@@ -20,6 +20,7 @@ export default ({
       onDatesChange={change}
       onFocusChange={focus}
       focusedInput={focused}
+      readOnly
     />
   </div>
 );
