@@ -9,13 +9,9 @@ export default defineMessages({
     id: "generic.no",
     defaultMessage: "No"
   },
-  brand: {
-    id: "generic.brand",
-    defaultMessage: "Sellics"
-  },
-  product: {
-    id: "generic.product",
-    defaultMessage: "Seller"
+  products: {
+    id: "generic.products",
+    defaultMessage: "Products"
   },
   overview: {
     id: "generic.overview",
