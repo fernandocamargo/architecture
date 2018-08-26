@@ -71,5 +71,7 @@ export default component => styled(component)`
     }
   }
 
-  ${({ menu }) => menuItem({ icons: ICONS, items: menu })};
+  & > ${Menu} {
+    ${({ menu }) => menuItem({ icons: ICONS, items: menu })};
+  }
 `;

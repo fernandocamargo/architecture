@@ -6,13 +6,15 @@ import Product from "components/product";
 import Percentage from "components/percentage";
 import Currency from "components/currency";
 import Menu from "components/menu";
+import { Generic as GenericMessages } from "i18n/messages";
 
-export default ({ rows }) => (
+export default ({ intl: { formatMessage }, rows }) => (
   <Table
     columns={[
       {
         label: () => "starred",
-        content: ({ item: { starred } }) => String(starred)
+        content: ({ item: { starred } }) =>
+          formatMessage(GenericMessages[!!starred ? "yes" : "no"])
       },
       {
         label: () => <Fragment>Product</Fragment>,

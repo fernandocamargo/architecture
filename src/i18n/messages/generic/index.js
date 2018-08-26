@@ -1,6 +1,14 @@
 import { defineMessages } from "react-intl";
 
 export default defineMessages({
+  yes: {
+    id: "generic.yes",
+    defaultMessage: "Yes"
+  },
+  no: {
+    id: "generic.no",
+    defaultMessage: "No"
+  },
   brand: {
     id: "generic.brand",
     defaultMessage: "Sellics"
