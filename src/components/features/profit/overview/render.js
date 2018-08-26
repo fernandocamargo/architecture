@@ -1,10 +1,7 @@
 import React from "react";
 
-import Form from "components/form";
 import Widget from "components/widget";
-import Menu from "components/menu";
-import TableProducts from "components/tables/products";
-import Pagination from "components/pagination";
+import WidgetProducts from "components/widgets/products";
 import FormContextLocation from "components/forms/context-location";
 import Chart from "components/chart";
 
@@ -116,21 +113,9 @@ export default ({ className, details, sales }) => (
         }}
       />
     </Widget>
-    <Widget>
-      <h3>Products</h3>
-      <Form />
-      <Menu>
-        {[
-          { url: "", title: "Export" },
-          { url: "", title: "Edit" },
-          { url: "", title: "Settings" }
-        ]}
-      </Menu>
-      <TableProducts rows={sales.results} />
-      <Pagination
-        {...sales.meta.pagination}
-        onPaginate={({ page }) => console.log("onPaginate();", +page)}
-      />
-    </Widget>
+    <WidgetProducts
+      results={sales.results}
+      pagination={sales.meta.pagination}
+    />
   </div>
 );
