@@ -1,16 +1,17 @@
 import React from "react";
 
+import { Primary as Heading } from "components/heading";
 import Link from "components/link";
-import { Generic as GenericMessages } from "i18n/messages";
+import { Brand as BrandMessages } from "i18n/messages";
 
 export default ({ intl: { formatMessage }, className, url }) => {
-  const title = formatMessage(GenericMessages.brand);
+  const title = formatMessage(BrandMessages.name);
 
   return (
-    <h2 className={className}>
+    <Heading className={className}>
       <Link to={url} title={title}>
         {title}
       </Link>
-    </h2>
+    </Heading>
   );
 };
