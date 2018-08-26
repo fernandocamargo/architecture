@@ -37,6 +37,7 @@ export default component => styled(component)`
     }
 
     &:nth-child(4) {
+      border: solid 1px #969696;
       grid-area: fourth;
     }
   }

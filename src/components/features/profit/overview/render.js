@@ -1,13 +1,9 @@
-import property from "lodash/property";
-import React, { Fragment } from "react";
+import React from "react";
 
 import Form from "components/form";
 import Widget from "components/widget";
 import Menu from "components/menu";
-import Currency from "components/currency";
-import Percentage from "components/percentage";
-import Table from "components/table";
-import Product from "components/product";
+import TableProducts from "components/tables/products";
 import Pagination from "components/pagination";
 import FormContextLocation from "components/forms/context-location";
 import Chart from "components/chart";
@@ -130,71 +126,7 @@ export default ({ className, details, sales }) => (
           { url: "", title: "Settings" }
         ]}
       </Menu>
-      <Table
-        rows={sales.results}
-        columns={[
-          {
-            label: () => "starred",
-            content: ({ item: { starred } }) => String(starred)
-          },
-          {
-            label: () => <Fragment>Product</Fragment>,
-            content: ({
-              item: { productName, customName },
-              links: { amazon, sellerCentral },
-              pk: { sku },
-              asin
-            }) => (
-              <Product
-                name={customName || productName}
-                sku={{ title: sku, url: amazon }}
-                asin={{ title: asin, url: sellerCentral }}
-              />
-            )
-          },
-          {
-            label: "Sales",
-            content: ({ sales: { value, percentage } }) => (
-              <Percentage value={percentage}>
-                <Currency>{value}</Currency>
-              </Percentage>
-            )
-          },
-          { label: "Orders", content: property("orders") },
-          { label: "Refunds", content: property("refunds") },
-          {
-            label: "Profit",
-            content: ({ profit: { value, percentage } }) => (
-              <Percentage value={percentage}>
-                <Currency>{value}</Currency>
-              </Percentage>
-            )
-          },
-          {
-            label: "Margin",
-            content: ({ profit: { value, percentage } }) => (
-              <Percentage value={percentage}>
-                <Currency>{value}</Currency>
-              </Percentage>
-            )
-          },
-          {
-            label: () => "Info",
-            content: () => <Menu>{[{ url: "", title: "Link to Amazon" }]}</Menu>
-          },
-          {
-            label: () => "Details",
-            content: () => (
-              <Menu>
-                {[
-                  { url: "", title: "Calculate something" },
-                  { url: "", title: "See charts" }
-                ]}
-              </Menu>
-            )
-          }
-        ]}
-      />
+      <TableProducts rows={sales.results} />
       <Pagination
         {...sales.meta.pagination}
         onPaginate={({ page }) => console.log("onPaginate();", +page)}
