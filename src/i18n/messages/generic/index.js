@@ -21,6 +21,10 @@ export default defineMessages({
     id: "generic.settings",
     defaultMessage: "Settings"
   },
+  actions: {
+    id: "generic.actions",
+    defaultMessage: "Actions"
+  },
   "not-found": {
     id: "generic.not-found",
     defaultMessage: "Not found"

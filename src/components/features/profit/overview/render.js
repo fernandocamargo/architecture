@@ -6,7 +6,7 @@ import FormContextLocation from "components/forms/context-location";
 import Chart from "components/chart";
 
 export default ({ className, details, sales }) => (
-  <div className={className}>
+  <section className={className}>
     <Widget>
       <FormContextLocation
         onChange={data => console.log("FormContextLocation.onChange();", data)}
@@ -117,5 +117,5 @@ export default ({ className, details, sales }) => (
       results={sales.results}
       pagination={sales.meta.pagination}
     />
-  </div>
+  </section>
 );

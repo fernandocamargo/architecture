@@ -6,7 +6,6 @@ import {
 export default ({ intl: { formatMessage } }) => ({
   menu: [
     { url: "", title: formatMessage(ActionsMessages.export) },
-    { url: "", title: formatMessage(ActionsMessages.edit) },
     { url: "", title: formatMessage(GenericMessages.settings) }
   ]
 });

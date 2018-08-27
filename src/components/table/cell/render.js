@@ -1,5 +1,5 @@
 import React from "react";
 
 export default ({ className, children }) => (
-  <article className={className}>{children}</article>
+  <td className={className}>{children}</td>
 );

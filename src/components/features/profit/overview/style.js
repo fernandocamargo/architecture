@@ -5,7 +5,7 @@ import Widget from "components/widget";
 export const widget = () => css`
   background-color: #fff;
   border: solid 1px rgba(233, 233, 233, 1);
-  border-radius: 4px;
+  border-radius: 7.5px;
   box-shadow: 0px 1px 8px -2px rgb(197, 206, 224);
   overflow: hidden;
 `;

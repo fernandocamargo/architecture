@@ -1,18 +1,17 @@
-import { compose, withHandlers } from "recompose";
+import { compose, withHandlers, withStateHandlers } from "recompose";
+import { injectIntl } from "react-intl";
 
 import setStatics from "helpers/rendering/statics/set";
 
 import * as statics from "./statics";
+import withStyle from "./style";
+import initialState from "./initial-state";
+import * as events from "./events";
 
 export default compose(
-  setStatics(statics),
-  withHandlers({
-    move: ({ current, total, onPaginate }) => direction => event => {
-      const target = current + direction;
-      const page = Math.min(Math.max(target, 1), total);
-
-      event.preventDefault();
-      onPaginate({ page });
-    }
-  })
+  withStyle,
+  injectIntl,
+  withHandlers(events),
+  withStateHandlers(initialState),
+  setStatics(statics)
 );

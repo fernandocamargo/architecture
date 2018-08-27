@@ -24,10 +24,10 @@ export const extractRowFrom = columns => row => ({
 });
 
 export default compose(
-  setStatics(statics),
+  withStyle,
   withProps(({ columns, rows }) => ({
     columns: ensureArray(columns).map(formatColumn),
     rows: ensureArray(rows).map(extractRowFrom(columns))
   })),
-  withStyle
+  setStatics(statics)
 );

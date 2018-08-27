@@ -1,28 +1,28 @@
 import React from "react";
 
 import Form from "components/form";
+import { Tertiary as Heading } from "components/heading";
+import Plain, { Strong } from "components/text";
+import Menu from "components/menu";
+import {
+  Pagination as PaginationMessages,
+  Generic as GenericMessages
+} from "i18n/messages";
 
-export default ({ current, total, move, onPaginate }) => (
-  <div>
-    <pre style={{ fontSize: "2rem" }}>{JSON.stringify({ current })}</pre>
-    <h3>
-      <span>Total of pages</span> <strong>{total}</strong>
-    </h3>
-    <nav>
-      <h4>Browse through:</h4>
-      <ul>
-        <li>
-          <a href="/" title="Previous page" onClick={move(-1)}>
-            Previous page
-          </a>
-        </li>
-        <li>
-          <a href="/" title="Next page" onClick={move(+1)}>
-            Next page
-          </a>
-        </li>
-      </ul>
-    </nav>
+export default ({
+  intl: { formatMessage },
+  className,
+  total,
+  menu,
+  current,
+  onPaginate
+}) => (
+  <div className={className}>
+    <Heading>
+      <Plain>{formatMessage(PaginationMessages.total)} </Plain>
+      <Strong>{total}</Strong>
+    </Heading>
+    <Menu title={`${formatMessage(GenericMessages.actions)}:`}>{menu}</Menu>
     <Form
       fields={[
         {
