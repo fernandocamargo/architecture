@@ -4,7 +4,7 @@ import * as locales from "./locales";
 
 export const languages = ["en", "de", "pt"];
 
-export const [locale] = String(window.navigator.language).split("-");
+export const [locale] = ["en"] || String(window.navigator.language).split("-");
 
 export const extractLocale = (stack, language) =>
   stack.concat([...locales[language]]);
